@@ -1,0 +1,37 @@
+{
+    "packageId": "com.familybond.app",
+    "host": "family-bond-final.vercel.app",
+    "name": "FamilyBond",
+    "launcherName": "FamilyBond",
+    "display": "standalone",
+    "themeColor": "#d4c5b9",
+    "navigationColor": "#000000",
+    "navigationColorDark": "#000000",
+    "navigationDividerColor": "#000000",
+    "navigationDividerColorDark": "#000000",
+    "backgroundColor": "#fdfbf7",
+    "enableNotifications": true,
+    "startUrl": "/",
+    "iconUrl": "https://family-bond-final.vercel.app/icon-512x512.png",
+    "maskableIconUrl": "https://family-bond-final.vercel.app/icon-512x512.png",
+    "signingKey": {
+        "path": "./android.keystore",
+        "alias": "android"
+    },
+    "appVersionCode": 1,
+    "appVersionName": "1.0.0",
+    "shortcuts": [],
+    "generatorApp": "bubblewrap-cli",
+    "webManifestUrl": "https://family-bond-final.vercel.app/manifest.json",
+    "fallbackType": "customtabs",
+    "features": {},
+    "alphaDependencies": {
+        "enabled": false
+    },
+    "enableSiteSettingsShortcut": true,
+    "isChromeOSOnly": false,
+    "orientation": "portrait-primary",
+    "fingerprints": [
+        "XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX"
+    ]
+}

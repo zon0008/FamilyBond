@@ -1,0 +1,35 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "terms": "Términos"
+    },
+    "home": {
+        "title": "Conectando vínculos perdidos,<br/>Encontraremos a tu familia.",
+        "desc": "Incluso los detalles más pequeños importan.<br/>Esperamos tus pistas.",
+        "placeholder": "Ingresa un nombre o características",
+        "recent": "Historias Recientes",
+        "all": "Ver Todas"
+    },
+    "post": {
+        "trustScore": "Nivel de Confianza",
+        "back": "Volver a la lista",
+        "author": "Buscando a",
+        "heart": "¿Te conmueve esta historia?",
+        "messageTitle": "Deja un mensaje cálido",
+        "messagePlaceholder": "Escribe una palabra de aliento...",
+        "notify": "Recibir notificaciones sobre esto",
+        "submit": "Enviar e Información",
+        "contact": "Información de Contacto"
+    },
+    "loading": [
+        "Buscando pistas preciosas...",
+        "Revisando registros pasados...",
+        "Escaneando datos a nivel nacional...",
+        "Analizando casos coincidentes..."
+    ],
+    "quotes": [
+        "La familia es la palabra más cálida del mundo.",
+        "Mientras no olvidemos, el vínculo nunca se rompe.",
+        "Tu pequeño valor crea un milagro."
+    ]
+}

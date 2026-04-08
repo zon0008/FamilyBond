@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.familybond.app",
+            "sha256_cert_fingerprints": [
+                "9D:92:83:93:97:06:2B:41:DF:AF:52:6E:17:C5:01:7E:4E:B8:9A:05:E4:6C:4C:56:87:F6:A3:02:4E:37:8D:92"
+            ]
+        }
+    }
+]

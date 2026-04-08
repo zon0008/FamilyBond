@@ -1,0 +1,87 @@
+{
+    "nav": {
+        "home": "Home",
+        "terms": "Terms & Privacy",
+        "about": "About",
+        "faq": "FAQ",
+        "contact": "Contact"
+    },
+    "home": {
+        "title": "Connecting lost bonds,<br/>We will find your family.",
+        "desc": "Even the smallest details matter.<br/>We are waiting for your clues.",
+        "placeholder": "Enter a name or details",
+        "recent": "Recent Touching Stories",
+        "all": "View All"
+    },
+    "login": {
+        "demo": "Continue with Demo Account"
+    },
+    "post": {
+        "trustScore": "Trust Score",
+        "back": "Back to list",
+        "author": "Looking for",
+        "heart": "Do you empathize with this story?",
+        "messageTitle": "Leave a warm message",
+        "messagePlaceholder": "Write an encouraging word...",
+        "notify": "Receive notifications for this story",
+        "submit": "Send & View Contact",
+        "contact": "Contact Info",
+        "evidence": {
+            "title": "Audio Evidence",
+            "desc": "Family's voice or characteristic accent can be a crucial clue in finding missing family members.",
+            "record": "Record Voice",
+            "play": "Play Evidence",
+            "empty": "No audio evidence available."
+        }
+    },
+    "about": {
+        "title": "Family is the warmest<br/>name in the world.",
+        "p1": "FamilyBond began with a single hope: that everyone who has lost a family member can find their back home.",
+        "p2": "In a modern society where the value of family is often faded, we leverage the power of technology and small courage from individuals to create miracles of reunion.",
+        "p3": "Your small concern and interest can be the last puzzle piece in a lost family's story."
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "q1": "How do I register a story?",
+        "a1": "Click the 'Post a Story' button in the home screen header to start the registration process.",
+        "q2": "Are there any service fees?",
+        "a2": "No, FamilyBond is 100% free of charge. We operate with the sole goal of reuniting families.",
+        "q3": "How is my personal information protected?",
+        "a3": "All sensitive information is securely encrypted. Contact details are only shared after administrator review and verification.",
+        "q4": "How does the matching process work?",
+        "a4": "When a matching story is found, our administrators verify the facts and then facilitate the connection between the parties.",
+        "q5": "What should I do if I find a suspected family member?",
+        "a5": "Please leave a message through the 'Heart' button on the story detail page with as much detail as possible.",
+        "q6": "Can I edit my registered story?",
+        "a6": "Yes, you can manage and edit your posts through your profile after logging in.",
+        "q7": "Is this service available abroad?",
+        "a7": "Yes, FamilyBond supports multiple languages and can be accessed from anywhere in the world.",
+        "q8": "How long does the verification take?",
+        "a8": "Typically, it takes 24-48 hours, but it may vary depending on the complexity of the case.",
+        "q9": "What kind of evidence can I upload?",
+        "a9": "You can upload photos, detailed descriptions, and even audio recordings (voice messages).",
+        "q10": "How can I support FamilyBond?",
+        "a10": "Spreading our stories on social media is the greatest support you can provide."
+    },
+    "contact": {
+        "title": "Contact Us",
+        "desc": "If you have any questions or reports, please leave a message.<br/>We will respond as quickly as possible.",
+        "name": "Name",
+        "email": "Email",
+        "subject": "Subject",
+        "message": "Message",
+        "submit": "Send Message",
+        "success": "Your message has been sent successfully."
+    },
+    "loading": [
+        "Looking for precious clues...",
+        "Cross-checking past records...",
+        "Scanning nationwide data...",
+        "Analyzing matching cases..."
+    ],
+    "quotes": [
+        "Family is the warmest word in the world.",
+        "As long as we don't forget, the bond is never broken.",
+        "Your small courage creates a miracle."
+    ]
+}

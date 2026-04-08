@@ -1,0 +1,35 @@
+{
+    "nav": {
+        "home": "Trang chủ",
+        "terms": "Điều khoản"
+    },
+    "home": {
+        "title": "Kết nối lại gia đình,<br/>chúng tôi sẽ giúp bạn.",
+        "desc": "Bất kỳ thông tin nào cũng quan trọng: tên, đặc điểm, vị trí.<br/>Chúng tôi đang chờ đợi manh mối của bạn.",
+        "placeholder": "Nhập tên hoặc đặc điểm",
+        "recent": "Những câu chuyện gần đây",
+        "all": "Xem tất cả"
+    },
+    "post": {
+        "trustScore": "Điểm tin cậy",
+        "back": "Trở lại",
+        "author": "Người tìm kiếm",
+        "heart": "Bạn có đồng cảm với điều này không?",
+        "messageTitle": "Để lại một tin nhắn ấm áp",
+        "messagePlaceholder": "Lời động viên...",
+        "notify": "Nhận thông báo cập nhật",
+        "submit": "Gửi & Xem liên hệ",
+        "contact": "Xem liên hệ"
+    },
+    "loading": [
+        "Đang tìm kiếm manh mối...",
+        "Đang đối chiếu hồ sơ cũ...",
+        "Đang quét dữ liệu toàn quốc...",
+        "Đang phân tích đối khớp chính xác..."
+    ],
+    "quotes": [
+        "Gia đình là từ ấm áp nhất trên thế giới.",
+        "Chừng nào chúng ta còn nhớ, mối liên kết sẽ không đứt gãy.",
+        "Lòng dũng cảm nhỏ bé của bạn làm nên điều kỳ diệu."
+    ]
+}
