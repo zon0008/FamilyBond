@@ -71,11 +71,11 @@ export default function ContactPage() {
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4"
+                    className="text-4xl md:text-5xl font-black text-foreground mb-4"
                 >
                     {d.title}
                 </motion.h1>
-                <p className="text-gray-500 dark:text-slate-400 text-lg">{d.subtitle}</p>
+                <p className="text-muted-foreground text-lg">{d.subtitle}</p>
             </div>
 
             <AnimatePresence mode="wait">
@@ -86,11 +86,11 @@ export default function ContactPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         onSubmit={handleSubmit}
-                        className="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-slate-700 space-y-8"
+                        className="bg-card p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none border border-border space-y-8"
                     >
                         <div className="grid md:grid-cols-2 gap-8">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
+                                <label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
                                     <User size={16} className="text-primary" />
                                     {d.name}
                                 </label>
@@ -98,11 +98,11 @@ export default function ContactPage() {
                                     required
                                     type="text"
                                     placeholder={d.placeholderName}
-                                    className="w-full px-5 py-4 bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                    className="w-full px-5 py-4 bg-muted/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
+                                <label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
                                     <Mail size={16} className="text-primary" />
                                     {d.email}
                                 </label>
@@ -110,13 +110,13 @@ export default function ContactPage() {
                                     required
                                     type="email"
                                     placeholder={d.placeholderEmail}
-                                    className="w-full px-5 py-4 bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                    className="w-full px-5 py-4 bg-muted/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground"
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
+                            <label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
                                 <FileText size={16} className="text-primary" />
                                 {d.subject}
                             </label>
@@ -124,12 +124,12 @@ export default function ContactPage() {
                                 required
                                 type="text"
                                 placeholder={d.placeholderSubject}
-                                className="w-full px-5 py-4 bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white"
+                                className="w-full px-5 py-4 bg-muted/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-bold text-gray-700 dark:text-slate-300 flex items-center gap-2">
+                            <label className="text-sm font-bold text-foreground/80 flex items-center gap-2">
                                 <MessageSquare size={16} className="text-primary" />
                                 {d.message}
                             </label>
@@ -137,7 +137,7 @@ export default function ContactPage() {
                                 required
                                 rows={6}
                                 placeholder={d.placeholderMessage}
-                                className="w-full px-5 py-4 bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white resize-none"
+                                className="w-full px-5 py-4 bg-muted/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-foreground resize-none"
                             ></textarea>
                         </div>
 
@@ -169,16 +169,16 @@ export default function ContactPage() {
                         <div className="w-24 h-24 bg-green-100 dark:bg-green-900/30 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
                             <CheckCircle2 size={56} />
                         </div>
-                        <h2 className="text-3xl font-black text-gray-900 dark:text-white">
+                        <h2 className="text-3xl font-black text-foreground">
                             {d.success}
                         </h2>
-                        <p className="text-gray-600 dark:text-slate-400 text-lg whitespace-pre-line">
+                        <p className="text-muted-foreground text-lg whitespace-pre-line">
                             {d.successDesc}
                         </p>
                         <div className="pt-8">
                             <button
                                 onClick={() => setIsSuccess(false)}
-                                className="px-10 py-4 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white rounded-2xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600 transition"
+                                className="px-10 py-4 bg-muted text-foreground rounded-2xl font-bold hover:bg-muted/80 transition"
                             >
                                 {lang === 'ko' ? '다시 문의하기' : 'Send another message'}
                             </button>
@@ -188,7 +188,7 @@ export default function ContactPage() {
             </AnimatePresence>
 
             <div className="mt-16 text-center">
-                <p className="text-gray-400 dark:text-slate-500 text-sm">
+                <p className="text-muted-foreground text-sm">
                     직접 이메일 보내기: <span className="font-bold text-primary">sinusung@naver.com</span>
                 </p>
             </div>

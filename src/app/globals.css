@@ -1,29 +1,32 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 @import "tailwindcss";
 
 :root {
-  --background: #f5f5dc;
-  --foreground: #0f172a;
+  --background: #ffffff;
+  --foreground: #000000;
   --primary: #4f46e5;
-  --primary-glow: rgba(79, 70, 229, 0.4);
+  --primary-glow: rgba(79, 70, 229, 0.2);
   --accent: #06b6d4;
-  --glass: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.08);
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #000000;
   --border: #e2e8f0;
+  --ring: rgba(79, 70, 229, 0.3);
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  --background: #000000;
+  --foreground: #ffffff;
   --primary: #818cf8;
-  --primary-glow: rgba(129, 140, 248, 0.4);
+  --primary-glow: rgba(129, 140, 248, 0.3);
   --accent: #22d3ee;
-  --glass: rgba(15, 23, 42, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --card: #1e293b;
-  --card-foreground: #f8fafc;
-  --border: #334155;
+  --glass: rgba(0, 0, 0, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --border: #262626;
+  --ring: rgba(129, 140, 248, 0.4);
 }
 
 @theme inline {
@@ -34,16 +37,18 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
-  --font-inter: var(--font-inter);
+  --font-inter: "Pretendard", system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply font-inter;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 }
 

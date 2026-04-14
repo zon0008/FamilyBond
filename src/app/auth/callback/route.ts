@@ -7,10 +7,8 @@ export async function GET(request: Request) {
     const code = searchParams.get('code');
     const next = searchParams.get('next') ?? '/';
 
-    // Determine origin from headers for stability on Vercel
-    const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
-    const protocol = request.headers.get('x-forwarded-proto') || 'https';
-    const origin = host ? `${protocol}://${host}` : new URL(request.url).origin;
+    // Force origin to production domain for stability on Vercel
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://family-bond-final.vercel.app';
 
     if (code) {
         const cookieStore = await cookies();

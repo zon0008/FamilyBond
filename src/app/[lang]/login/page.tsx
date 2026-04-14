@@ -36,10 +36,19 @@ export default function LoginPage() {
             return;
         }
 
+        // Resolve the site URL clearly for stable OAuth redirects
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://family-bond-final.vercel.app';
+        const redirectUrl = `${siteUrl}/auth/callback?next=${nextUrl}`;
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: `${window.location.origin}/auth/callback?next=${nextUrl}`
+                redirectTo: redirectUrl,
+                queryParams: provider === 'kakao' ? {
+                    prompt: 'select_account', // Always prompt for account select for stability
+                    access_type: 'offline'
+                } : {},
+                scopes: provider === 'kakao' ? 'account_email profile_nickname profile_image' : undefined
             }
         });
 
@@ -54,8 +63,8 @@ export default function LoginPage() {
     };
 
     // i18n dictionary for the new button
-    const demoText = (lang === 'ko' ? '테스트 계정으로 즉시 둘러보기 (Demo)' : 'Quick Start with Demo Account');
-    const demoDesc = (lang === 'ko' ? '별도의 가입 없이 모든 기능을 바로 체험해 보실 수 있습니다.' : 'Experience all features immediately without signing up.');
+    const demoText = (lang === 'ko' ? '로그인 없이 즉시 둘러보기' : 'Browse immediately without login');
+    const demoDesc = (lang === 'ko' ? '가입 절차 없이 모든 기능을 바로 체험해보세요.' : 'Experience all features right away without registration.');
     const snsTitle = (lang === 'ko' ? '또는 SNS 계정으로 시작하기' : 'Or start with Social Accounts');
 
     return (
@@ -108,8 +117,12 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-10 leading-relaxed">
+                <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-10 leading-relaxed group">
                     SNS 로그인이 작동하지 않을 경우 Supabase 설정이 필요합니다. <br />
+                    <span className="text-amber-500 dark:text-amber-400 font-bold block mt-1 animate-pulse">
+                        💡 카카오톡/인스타그램 등 인앱 브라우저에서 구글 로그인이 안 될 경우, <br />
+                        우측 상단 메뉴를 눌러 '다른 브라우저로 열기'를 선택해 주세요.
+                    </span>
                     (기본적으로 Demo 로그인을 권장합니다)
                 </p>
             </div>

@@ -51,34 +51,34 @@ export default function FAQPage() {
                 <motion.h1
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4"
+                    className="text-4xl md:text-5xl font-black text-foreground mb-4"
                 >
                     {d.title}
                 </motion.h1>
-                <p className="text-gray-500 dark:text-slate-400 text-lg">{d.subtitle}</p>
+                <p className="text-muted-foreground text-lg">{d.subtitle}</p>
             </div>
 
             <div className="space-y-4">
                 {d.items.map((item: any, idx: number) => (
                     <div
                         key={idx}
-                        className={`border rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === idx ? 'bg-white dark:bg-slate-800 shadow-xl border-primary/20 ring-1 ring-primary/10' : 'bg-white/50 dark:bg-slate-800/50 border-gray-100 dark:border-slate-700 hover:border-primary/20'}`}
+                        className={`border rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === idx ? 'bg-card shadow-xl border-primary/20 ring-1 ring-primary/10' : 'bg-card/50 border-border hover:border-primary/20'}`}
                     >
                         <button
                             onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                             className="w-full px-6 py-6 flex items-center justify-between text-left group"
                         >
                             <span className="flex items-center gap-4">
-                                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${openIndex === idx ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-slate-400 group-hover:bg-primary/10 group-hover:text-primary'}`}>
+                                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${openIndex === idx ? 'bg-primary text-white' : 'bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'}`}>
                                     {idx + 1}
                                 </span>
-                                <span className={`font-bold text-lg md:text-xl transition-colors ${openIndex === idx ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-slate-400'}`}>
+                                <span className={`font-bold text-lg md:text-xl transition-colors ${openIndex === idx ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'}`}>
                                     {item.q}
                                 </span>
                             </span>
                             <motion.div
                                 animate={{ rotate: openIndex === idx ? 180 : 0 }}
-                                className={`text-gray-400 ${openIndex === idx ? 'text-primary' : ''}`}
+                                className={`text-muted-foreground ${openIndex === idx ? 'text-primary' : ''}`}
                             >
                                 <ChevronDown />
                             </motion.div>
@@ -93,7 +93,7 @@ export default function FAQPage() {
                                     transition={{ duration: 0.3 }}
                                 >
                                     <div className="px-6 pb-6 pt-2 ml-12">
-                                        <div className="p-5 bg-gray-50 dark:bg-slate-900/50 rounded-2xl border-l-4 border-primary text-gray-700 dark:text-slate-300 leading-relaxed text-base md:text-lg">
+                                        <div className="p-5 bg-muted/30 rounded-2xl border-l-4 border-primary text-foreground/80 leading-relaxed text-base md:text-lg">
                                             {item.a}
                                         </div>
                                     </div>
@@ -110,8 +110,8 @@ export default function FAQPage() {
                         <HelpCircle size={24} />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">더 궁금하신 점이 있으신가요?</h3>
-                        <p className="text-gray-500 dark:text-slate-400 text-sm">고객센터 문의하기를 통해 직접 문의하실 수 있습니다.</p>
+                        <h3 className="text-lg font-bold text-foreground">더 궁금하신 점이 있으신가요?</h3>
+                        <p className="text-muted-foreground text-sm">고객센터 문의하기를 통해 직접 문의하실 수 있습니다.</p>
                     </div>
                 </div>
                 <Link

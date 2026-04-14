@@ -67,11 +67,11 @@ export default async function TermsPage(props: { params: Promise<{ lang: string 
 
     return (
         <div className="w-full max-w-3xl mx-auto px-4 py-12">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">{t.title}</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-8">{t.title}</h1>
 
-            <div className="bg-white dark:bg-slate-900/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-8 text-gray-700 dark:text-slate-300 leading-relaxed text-sm transition-colors">
+            <div className="bg-card backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-border space-y-8 text-muted-foreground leading-relaxed text-sm transition-colors">
                 <section>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{t.tosTitle}</h2>
+                    <h2 className="text-xl font-bold text-foreground mb-4">{t.tosTitle}</h2>
                     <p className="mb-2">{t.tosIntro}</p>
                     <ul className="list-disc pl-5 space-y-2">
                         {t.tosLists.map((item: string, idx: number) => (
@@ -81,7 +81,7 @@ export default async function TermsPage(props: { params: Promise<{ lang: string 
                 </section>
 
                 <section>
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{t.privacyTitle}</h2>
+                    <h2 className="text-xl font-bold text-foreground mb-4">{t.privacyTitle}</h2>
                     <p className="mb-2">{t.privacyIntro}</p>
                     <ul className="list-disc pl-5 space-y-2">
                         {t.privacyLists.map((item: string, idx: number) => (

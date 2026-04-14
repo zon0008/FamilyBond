@@ -8,7 +8,7 @@ import VoiceRecorder from "@/components/VoiceRecorder";
 import Link from "next/link";
 
 const dict: Record<string, any> = {
-    ko: { title: "새로운 인연 등록하기", nameLabel: "찾고자 하는 대상의 이름", locLabel: "국가 및 마지막 발견 지역", photoLabel: "추억이 담긴 사진 (선택)", descLabel: "상세 사연", submit: "글로벌 사연 게시 (Secure)", back: "돌아가기", authCta: "가족을 찾기 위해\n먼저 안전하게 로그인해 주세요.", authDesc: "본인 인증을 거친 안전한 사용자만 사연을 게시할 수 있습니다. 1초면 충분합니다." },
+    ko: { title: "새로운 인연 등록하기", nameLabel: "찾고자 하는 대상의 이름", locLabel: "국가 및 마지막 발견 지역", photoLabel: "추억이 담긴 사진 (최대 10장 선택 가능)", descLabel: "상세 사연", submit: "글로벌 사연 게시 (Secure)", back: "돌아가기", authCta: "가족을 찾기 위해\n먼저 안전하게 로그인해 주세요.", authDesc: "본인 인증을 거친 안전한 사용자만 사연을 게시할 수 있습니다. 1초면 충분합니다." },
     en: { title: "Register Missing Family", nameLabel: "Name of target person", locLabel: "Country & Last Location", photoLabel: "Memorable Photo (Optional)", descLabel: "Detailed story", submit: "Publish Globally (Secure)", back: "Back", authCta: "Please log in safely\nto find your family.", authDesc: "Only verified users can post. It takes just one second." },
     es: { title: "Registrar Familia Perdida", nameLabel: "Nombre destino", locLabel: "País y Ubicación", photoLabel: "Foto Memorable (Opcional)", descLabel: "Historia detallada", submit: "Publicar Globalmente", back: "Volver", authCta: "Inicia sesión de forma segura\npara encontrar a tu familia.", authDesc: "Solo usuarios verificados pueden publicar. Toma un segundo." }
 };
@@ -21,7 +21,7 @@ export default function NewPostPage() {
     const [loading, setLoading] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [formData, setFormData] = useState({ name: "", location: "", story: "" });
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
     const [audioDataUrl, setAudioDataUrl] = useState<string | null>(null);
 
@@ -37,12 +37,33 @@ export default function NewPostPage() {
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => setImagePreview(reader.result as string);
-            reader.readAsDataURL(file);
+        const files = e.target.files;
+        if (files) {
+            const newPreviews: string[] = [...imagePreviews];
+            const remainingSlots = 10 - newPreviews.length;
+            const filesToProcess = Array.from(files).slice(0, remainingSlots);
+
+            if (Array.from(files).length > remainingSlots) {
+                alert(lang === 'ko' ? "최대 10장까지만 업로드할 수 있습니다." : "You can only upload up to 10 images.");
+            }
+
+            let loadedCount = 0;
+            filesToProcess.forEach(file => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    newPreviews.push(reader.result as string);
+                    loadedCount++;
+                    if (loadedCount === filesToProcess.length) {
+                        setImagePreviews(newPreviews);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
         }
+    };
+
+    const removeImage = (index: number) => {
+        setImagePreviews(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +97,7 @@ export default function NewPostPage() {
                 location: formData.location,
                 story: formData.story,
                 date: new Date().toLocaleDateString(),
-                image: imagePreview,
+                images: imagePreviews,
                 audio: audioDataUrl
             }));
 
@@ -97,7 +118,8 @@ export default function NewPostPage() {
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 story_text: formData.story,
                 author_id: user?.id,
-                audio_url: audioDataUrl // In production, this would be a URL after storage upload
+                audio_url: audioDataUrl, // In production, this would be a URL after storage upload
+                images: imagePreviews // In production, these would be URLs
             }).select().single();
 
             setLoading(false);
@@ -155,17 +177,32 @@ export default function NewPostPage() {
                         <label className="text-sm font-semibold text-gray-700 dark:text-slate-300 flex items-center gap-2">
                             <Camera className="w-4 h-4" /> {d.photoLabel}
                         </label>
-                        <div className="relative w-full h-32 md:h-48 border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-800/50 flex items-center justify-center overflow-hidden hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer group">
-                            <input type="file" accept="image/*" capture="environment" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
-                            {imagePreview ? (
-                                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                            ) : (
-                                <div className="text-center flex flex-col items-center">
-                                    <ImageIcon className="w-8 h-8 text-gray-400 dark:text-slate-600 group-hover:scale-110 transition-transform mb-2" />
-                                    <span className="text-sm font-medium text-gray-500 dark:text-slate-400">클릭 또는 드래그하여 이미지 (선택) 업로드</span>
+
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                            {imagePreviews.map((src, idx) => (
+                                <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 group shadow-sm">
+                                    <img src={src} alt={`Preview ${idx}`} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeImage(idx)}
+                                        className="absolute top-1 right-1 p-1 bg-black/60 text-white rounded-full hover:bg-black transition-colors"
+                                    >
+                                        <ShieldAlert size={14} className="rotate-45" />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {imagePreviews.length < 10 && (
+                                <div className="relative aspect-square border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-800/50 flex items-center justify-center overflow-hidden hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer group">
+                                    <input type="file" multiple accept="image/*" capture="environment" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                    <div className="text-center flex flex-col items-center p-2">
+                                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-slate-600 group-hover:scale-110 transition-transform mb-1" />
+                                        <span className="text-[10px] md:text-sm font-medium text-gray-500 dark:text-slate-400">사진 추가</span>
+                                    </div>
                                 </div>
                             )}
                         </div>
+                        <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1 italic">* 추억이 담긴 사진을 여러 장 올리면 찾을 확률이 높아집니다.</p>
                     </div>
 
                     <div className="flex flex-col gap-2">

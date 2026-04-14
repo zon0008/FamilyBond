@@ -3,15 +3,31 @@ import React, { useState, useEffect } from "react";
 import AdUnit from "@/components/AdUnit";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, MapPin, Calendar, Heart, ShieldCheck, Mail, Lock, Unlock, Share2 } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Heart, ShieldCheck, Mail, Lock, Unlock, Share2, ChevronLeft, ChevronRight, Copy, Check, MessageCircleMore, Send } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import AudioPlayer from "@/components/AudioPlayer";
 import { createBrowserClient } from "@supabase/ssr";
+import { motion, AnimatePresence } from "framer-motion";
 
 const clientDict: Record<string, any> = {
-    ko: { back: "목록으로 돌아가기", trustScore: "신뢰도 지수", author: "찾는 이", heart: "가족이라고 생각되시나요?", messageTitle: "정확한 증빙이나 특징을 적어주세요", messagePlaceholder: "예: 어릴 적 사진, 상처 위치 등...", notify: "매칭 결과 알림 받기", submit: "관리자 검토 요청하기", waitingAd: "안전한 연결망을 준비 중입니다..." },
-    en: { back: "Back to list", trustScore: "Trust Score", author: "Looking for", heart: "Is this your family?", messageTitle: "Provide proof or specific features", messagePlaceholder: "e.g., childhood photos, scars...", notify: "Get matched updates", submit: "Request Admin Review", waitingAd: "Securing connection..." },
-    es: { back: "Volver", trustScore: "Confianza", author: "Buscando", heart: "¿Es esta tu familia?", messageTitle: "Proporciona pruebas o marcas únicas", messagePlaceholder: "ej. fotos de infancia, cicatrices...", notify: "Recibir estado del match", submit: "Solicitar revisión", waitingAd: "Asegurando conexión..." }
+    ko: {
+        back: "목록으로 돌아가기", trustScore: "신뢰도 지수", author: "찾는 이", heart: "가족이라고 생각되시나요?",
+        messageTitle: "정확한 증빙이나 특징을 적어주세요", messagePlaceholder: "예: 어릴 적 사진, 상처 위치 등...",
+        notify: "매칭 결과 알림 받기", submit: "관리자 검토 요청하기", waitingAd: "안전한 연결망을 준비 중입니다...",
+        spreadTheWord: "이 사연을 더 널리 알려주세요", shareKakao: "카카오톡 공유", shareFb: "페이스북 공유", copyLink: "링크 복사"
+    },
+    en: {
+        back: "Back to list", trustScore: "Trust Score", author: "Looking for", heart: "Is this your family?",
+        messageTitle: "Provide proof or specific features", messagePlaceholder: "e.g., childhood photos, scars...",
+        notify: "Get matched updates", submit: "Request Admin Review", waitingAd: "Securing connection...",
+        spreadTheWord: "Spread the Word", shareKakao: "Share to Kakao", shareFb: "Share to Facebook", copyLink: "Copy Link"
+    },
+    es: {
+        back: "Volver", trustScore: "Confianza", author: "Buscando", heart: "¿Es esta tu familia?",
+        messageTitle: "Proporciona pruebas o marcas únicas", messagePlaceholder: "ej. fotos de infancia, cicatrices...",
+        notify: "Recibir estado del match", submit: "Solicitar revisión", waitingAd: "Asegurando conexión...",
+        spreadTheWord: "Difunde la palabra", shareKakao: "Compartir en Kakao", shareFb: "Compartir en Facebook", copyLink: "Copiar enlace"
+    }
 };
 
 export default function PostDetailPage() {
@@ -26,6 +42,7 @@ export default function PostDetailPage() {
     const [funnelStep, setFunnelStep] = useState(0);
     const [showFloating, setShowFloating] = useState(false);
     const [mockData, setMockData] = useState<any>(null);
+    const [currentImgIdx, setCurrentImgIdx] = useState(0);
 
     // 워크플로우 매칭 상태 ('idle', 'pending', 'approved')
     const [matchStatus, setMatchStatus] = useState<'idle' | 'pending' | 'approved'>('idle');
@@ -43,6 +60,38 @@ export default function PostDetailPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [id]);
 
+    const [copied, setCopied] = useState(false);
+
+    const handleSnsShare = (type: 'kakao' | 'fb' | 'copy') => {
+        const url = window.location.href;
+        const text = mockData ? mockData.story : "FamilyBond - 가족을 찾습니다";
+
+        if (type === 'kakao') {
+            // @ts-ignore
+            if (window.Kakao && window.Kakao.isInitialized()) {
+                // @ts-ignore
+                window.Kakao.Share.sendDefault({
+                    objectType: 'feed',
+                    content: {
+                        title: 'FamilyBond - 소중한 인연',
+                        description: text.substring(0, 100),
+                        imageUrl: mockData?.images?.[0] || 'https://images.unsplash.com/photo-1511895426328-dc8714191300',
+                        link: { mobileWebUrl: url, webUrl: url },
+                    },
+                    buttons: [{ title: '사연 보기', link: { mobileWebUrl: url, webUrl: url } }]
+                });
+            } else {
+                alert(`[DEMO] 카카오톡으로 사연을 전파합니다.\n\n공유 텍스트: ${text.substring(0, 50)}...`);
+            }
+        } else if (type === 'fb') {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        } else {
+            navigator.clipboard.writeText(url);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -55,15 +104,13 @@ export default function PostDetailPage() {
                 console.log('공유 취소됨');
             }
         } else {
-            alert("데스크톱 환경에서는 링크를 수동으로 복사해주세요.\n" + window.location.href);
+            handleSnsShare('copy');
         }
     };
 
     const handleNextStep = async () => {
         if (funnelStep === 2) {
             setFunnelStep(3);
-
-            // Push 알림 시뮬레이션: 현재 사용자에게 푸시를 보냅니다. (실제 환경에서는 포스트 작성자에게 발송)
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
@@ -82,7 +129,6 @@ export default function PostDetailPage() {
             }
 
             setTimeout(() => {
-                // 5초 광고 시청 후 연락처를 바로 공개하는 대신, Match Request(승인대기) 모드로 전환.
                 setMatchStatus('pending');
                 setFunnelStep(0);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -92,13 +138,16 @@ export default function PostDetailPage() {
         }
     };
 
-    // [데모 전용 API]: 작성자 이름을 연타해 매칭 관리자가 승인한 상황을 시뮬레이션
     const simulateAdminApproval = () => {
         setMatchStatus('approved');
         setTimeout(() => {
             alert(`[System 알림] \n매칭 관리자가 두 분의 가족 관계를 승인했습니다!\n보안 마스킹이 해제되어 진짜 연락처가 교환됩니다.`);
         }, 100);
     };
+
+    const images = mockData?.images || (mockData?.image ? [mockData.image] : ["https://picsum.photos/800/400.webp"]);
+    const nextImage = () => setCurrentImgIdx((prev) => (prev + 1) % images.length);
+    const prevImage = () => setCurrentImgIdx((prev) => (prev - 1 + images.length) % images.length);
 
     return (
         <div className="w-full max-w-3xl mx-auto px-4 py-8 relative">
@@ -113,9 +162,40 @@ export default function PostDetailPage() {
                 </Link>
             </div>
 
-            <article className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-slate-800 transition-colors">
-                <div className="relative w-full h-64 md:h-80 bg-gray-100 dark:bg-slate-800 border-b border-gray-100 dark:border-slate-800">
-                    <Image src={mockData?.image || "https://picsum.photos/800/400.webp"} alt="Post Hero" fill className="object-cover" unoptimized />
+            <article className="bg-white/95 dark:bg-slate-900 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-slate-800 transition-colors">
+                <div className="relative w-full h-72 md:h-96 bg-gray-100 dark:bg-slate-800 border-b border-gray-100 dark:border-slate-800 group/carousel">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentImgIdx}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.4 }}
+                            className="absolute inset-0 cursor-zoom-in"
+                        >
+                            <Image src={images[currentImgIdx]} alt={`Story Image ${currentImgIdx}`} fill className="object-cover" unoptimized />
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {images.length > 1 && (
+                        <>
+                            <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white rounded-full transition-all opacity-0 group-hover/carousel:opacity-100 backdrop-blur-sm">
+                                <ChevronLeft className="w-6 h-6" />
+                            </button>
+                            <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white rounded-full transition-all opacity-0 group-hover/carousel:opacity-100 backdrop-blur-sm">
+                                <ChevronRight className="w-6 h-6" />
+                            </button>
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 p-1.5 bg-black/20 backdrop-blur-md rounded-full">
+                                {images.map((_: any, i: number) => (
+                                    <div
+                                        key={i}
+                                        onClick={() => setCurrentImgIdx(i)}
+                                        className={`w-1.5 h-1.5 rounded-full cursor-pointer transition-all ${i === currentImgIdx ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/80'}`}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 <div className="p-8 pb-6 border-b border-gray-100 dark:border-slate-800">
@@ -127,61 +207,101 @@ export default function PostDetailPage() {
                     </div>
 
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight mb-6">
-                        {mockData ? `${mockData.story.substring(0, 30)}...` : '1995년 서울역에서 헤어진 동생(김철수)을 찾습니다'}
+                        {mockData ? `${mockData.story.substring(0, 30)}...` : '소중한 가족을 찾고 있습니다'}
                     </h1>
 
-                    <div className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-slate-400 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-xl items-center border border-gray-100 dark:border-slate-700/50">
-                        <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 p-1 rounded transition" title="데모: 관리자 승인 시뮬레이션을 위해 클릭하세요">
-                            <strong className="text-gray-900 dark:text-white">{d.author}:</strong> {mockData ? mockData.name : '김영희'} (본인인증 됨)
+                    <div className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-slate-200 bg-gray-50/80 dark:bg-slate-800/80 p-4 rounded-xl items-center border border-gray-100 dark:border-slate-700/50">
+                        <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 p-1 rounded transition">
+                            <strong className="text-gray-900 dark:text-white">{d.author}:</strong> <span className="text-gray-900 dark:text-white font-bold">{mockData ? mockData.name : '제보자'}</span>
                         </span>
-                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><MapPin className="w-4 h-4" /> {mockData ? mockData.location : 'KOR / Asia/Seoul'}</span>
-                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><Calendar className="w-4 h-4" /> {mockData ? mockData.date : '2026.04.05'}</span>
+                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><MapPin className="w-4 h-4" /> {mockData ? mockData.location : '지역 정보 없음'}</span>
+                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><Calendar className="w-4 h-4" /> {mockData ? mockData.date : '일자 정보 없음'}</span>
 
-                        <button onClick={handleShare} className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm rounded-lg hover:border-primary dark:hover:border-cyan-400 hover:text-primary dark:hover:text-cyan-400 transition font-bold active:scale-95 text-gray-700 dark:text-slate-200">
+                        <button onClick={handleShare} className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm rounded-lg hover:border-primary transition font-bold text-gray-700 dark:text-slate-200">
                             <Share2 className="w-4 h-4" /> 공유하기
                         </button>
                     </div>
 
-                    {/* [보안 마스킹 연락처 영역] - Phase 6 매칭 승인 결과 UI */}
                     {matchStatus !== 'idle' && (
-                        <div className={`mt-6 p-5 rounded-2xl border flex items-center justify-between transition-all duration-700 ${matchStatus === 'approved' ? 'bg-green-50 dark:bg-emerald-900/20 border-green-200 dark:border-emerald-800/30' : 'bg-orange-50 dark:bg-amber-900/20 border-orange-200 dark:border-amber-800/30'}`}>
+                        <div className={`mt-6 p-5 rounded-2xl border flex items-center justify-between transition-all duration-700 ${matchStatus === 'approved' ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
                             <div className="flex flex-col">
-                                <span className={`text-xs font-bold uppercase tracking-wider mb-1 ${matchStatus === 'approved' ? 'text-green-600 dark:text-emerald-400' : 'text-orange-600 dark:text-amber-400'}`}>
+                                <span className={`text-xs font-bold uppercase tracking-wider mb-1 ${matchStatus === 'approved' ? 'text-green-600' : 'text-orange-600'}`}>
                                     {matchStatus === 'approved' ? 'Match Approved' : 'Pending Verification'}
                                 </span>
-                                <h3 className={`text-2xl md:text-3xl font-black font-mono tracking-widest transition-all ${matchStatus === 'approved' ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-slate-600 blur-[2px] select-none hover:blur-[1px]'}`}>
+                                <h3 className={`text-2xl font-black font-mono tracking-widest ${matchStatus === 'approved' ? 'text-gray-900' : 'text-gray-400 blur-[2px]'}`}>
                                     {matchStatus === 'approved' ? '010-8291-3844' : '010-****-****'}
                                 </h3>
-                                {matchStatus === 'pending' && <p className="text-xs md:text-sm text-orange-600 dark:text-amber-400 mt-2 font-medium">관리자(Mediator)의 매칭 검증 후에 연락처를 확인하실 수 있습니다.</p>}
                             </div>
-                            <div className={`p-4 rounded-full ${matchStatus === 'approved' ? 'bg-white dark:bg-slate-800 shadow-sm ring-4 ring-green-100 dark:ring-emerald-900/40' : 'bg-orange-100 dark:bg-amber-900/40'}`}>
-                                {matchStatus === 'approved' ? <Unlock className="w-6 h-6 text-green-500 dark:text-emerald-400" /> : <Lock className="w-6 h-6 text-orange-500 dark:text-amber-400" />}
+                            <div className={`p-4 rounded-full ${matchStatus === 'approved' ? 'bg-white' : 'bg-orange-100'}`}>
+                                {matchStatus === 'approved' ? <Unlock className="w-6 h-6 text-green-500" /> : <Lock className="w-6 h-6 text-orange-500" />}
                             </div>
                         </div>
                     )}
                 </div>
 
-                <div className="p-8 prose prose-gray dark:prose-invert max-w-none text-gray-700 dark:text-slate-300 leading-relaxed text-lg pb-8">
+                <div className="p-8 prose prose-gray dark:prose-invert max-w-none text-foreground dark:text-slate-200 leading-relaxed text-lg pb-8">
                     {mockData?.audio && (
                         <div className="mb-8 not-prose">
                             <AudioPlayer src={mockData.audio} />
                         </div>
                     )}
-                    {mockData ? (
-                        <p className="whitespace-pre-line">{mockData.story}</p>
-                    ) : (
-                        <>
-                            <p>1995년 여름, 서울역 광장에서 아이스크림을 사러 간 동생을 마지막으로 보지 못했습니다. 등에 커다란 흉터가 있습니다...</p>
-                            <p>가족은 세상에서 가장 따뜻한 이름입니다. 동생아 보고싶다.</p>
-                        </>
-                    )}
+                    <p className="whitespace-pre-line">{mockData ? mockData.story : '사연 내용을 불러오는 중입니다...'}</p>
                 </div>
             </article>
 
-            {/* Floating UI: Micro-Yes Funnel */}
+            {/* 사연 전파하기 섹션 */}
+            <div className="mt-8 mb-24 p-8 relative overflow-hidden rounded-3xl border border-indigo-100/50 dark:border-indigo-900/30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/20 dark:to-blue-950/20 z-0" />
+                <motion.div
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], x: [0, 50, 0], y: [0, -30, 0] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                    className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 dark:bg-cyan-400/10 rounded-full blur-3xl z-0"
+                />
+
+                <div className="relative z-10 flex flex-col items-center text-center">
+                    <div className="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center shadow-sm mb-4">
+                        <Share2 className="w-8 h-8 text-primary dark:text-cyan-400" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{d.spreadTheWord}</h2>
+                    <p className="text-gray-600 dark:text-slate-400 max-w-md mx-auto mb-8">
+                        공유 한 번이 누군가에게는 평생의 기적이 될 수 있습니다. <br />
+                        우리 사회의 따뜻한 관심을 모아주세요.
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(254, 229, 0, 0.4)" }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleSnsShare('kakao')}
+                            className="flex items-center gap-3 px-6 py-4 bg-[#FEE500] text-[#3c1e1e] font-bold rounded-2xl shadow-md border border-yellow-200 transition-shadow"
+                        >
+                            <MessageCircleMore className="w-6 h-6 fill-current" />
+                            {d.shareKakao}
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(24, 119, 242, 0.4)" }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleSnsShare('fb')}
+                            className="flex items-center gap-3 px-6 py-4 bg-[#1877F2] text-white font-bold rounded-2xl shadow-md border border-blue-400/30 transition-shadow"
+                        >
+                            <Send className="w-6 h-6 fill-current" />
+                            {d.shareFb}
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(99, 102, 241, 0.2)" }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleSnsShare('copy')}
+                            className="flex items-center gap-3 px-6 py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-bold rounded-2xl shadow-md border border-gray-200 dark:border-slate-700 transition-shadow"
+                        >
+                            {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6" />}
+                            {d.copyLink}
+                        </motion.button>
+                    </div>
+                </div>
+            </div>
+
             <div className={`fixed bottom-0 left-0 right-0 p-4 transform transition-transform duration-500 z-50 flex justify-center ${showFloating || funnelStep > 0 ? 'translate-y-0' : 'translate-y-full'}`}>
                 <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 p-6 flex flex-col gap-4 animate-fade-in-up transition-colors">
-
                     {funnelStep === 0 && matchStatus === 'idle' && (
                         <div className="flex items-center justify-between">
                             <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -193,14 +313,12 @@ export default function PostDetailPage() {
                             </button>
                         </div>
                     )}
-
                     {funnelStep === 0 && matchStatus !== 'idle' && (
                         <div className="flex items-center justify-center p-2 text-gray-500 dark:text-slate-400 font-medium">
                             <ShieldCheck className="w-5 h-5 text-gray-400 dark:text-slate-500 mr-2" />
                             {matchStatus === 'approved' ? '진심으로 가족 상봉을 축하합니다!' : '보안 매칭을 위해 관리자가 검토 중입니다.'}
                         </div>
                     )}
-
                     {funnelStep === 1 && (
                         <div className="flex flex-col gap-3 animate-fade-in">
                             <label className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -213,7 +331,6 @@ export default function PostDetailPage() {
                             </button>
                         </div>
                     )}
-
                     {funnelStep === 2 && (
                         <div className="flex flex-col gap-4 animate-fade-in">
                             <label className="flex items-start gap-3 cursor-pointer">
@@ -226,7 +343,6 @@ export default function PostDetailPage() {
                             </button>
                         </div>
                     )}
-
                     {funnelStep === 3 && (
                         <div className="flex flex-col items-center gap-2 animate-fade-in w-full">
                             <h3 className="font-bold text-gray-900 dark:text-white mb-2">{d.waitingAd}</h3>

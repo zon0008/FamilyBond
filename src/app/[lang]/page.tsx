@@ -24,24 +24,24 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
         {/* Hero Section - Vibrant & Hooking */}
         <section className="relative text-center py-24 md:py-32 flex flex-col items-center justify-center rounded-[3rem] overflow-hidden">
           {/* Animated Background Decor */}
-          <div className="absolute top-0 left-0 w-full h-full -z-10 bg-gradient-to-br from-slate-50 to-indigo-50/50 dark:from-slate-900 dark:to-indigo-950/30" />
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-indigo-200/30 dark:bg-indigo-500/10 blur-[100px] rounded-full animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-200/30 dark:bg-cyan-500/10 blur-[100px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-0 left-0 w-full h-full -z-10 bg-gradient-to-br from-background via-primary/5 to-background" />
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 blur-[100px] rounded-full animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/10 blur-[100px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
 
           <div className="relative z-10 flex flex-col items-center gap-6 px-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-full border border-indigo-100 dark:border-indigo-800 mb-2">
-              <Heart className="w-4 h-4 text-indigo-600 fill-indigo-200 dark:text-indigo-400 dark:fill-indigo-900" />
-              <span className="text-[11px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">실시간 가족 매칭 플랫폼</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-2">
+              <Heart className="w-4 h-4 text-primary fill-primary/20" />
+              <span className="text-[11px] font-black text-primary uppercase tracking-widest">실시간 가족 매칭 플랫폼</span>
             </div>
 
             <h1
-              className="text-3xl sm:text-4xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tight max-w-4xl"
+              className="text-4xl sm:text-5xl md:text-8xl font-black text-foreground leading-[1.05] tracking-tighter max-w-4xl italic"
               style={{ textWrap: 'balance' }}
               dangerouslySetInnerHTML={{ __html: dict.home.title }}
             />
 
             <p
-              className="text-slate-500 dark:text-slate-400 max-w-2xl text-lg md:text-xl font-medium leading-relaxed mb-6"
+              className="text-foreground/60 max-w-2xl text-lg md:text-xl font-medium leading-relaxed mb-6"
               dangerouslySetInnerHTML={{ __html: dict.home.desc }}
             />
 
@@ -52,21 +52,23 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
         <AdUnit type="banner" />
 
         {/* Recent Stories - Premium Grid */}
-        <section className="flex flex-col gap-8 relative z-10 px-4">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
-                <span className="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900">
-                  <Heart className="w-6 h-6 text-white" />
+        <section className="flex flex-col gap-10 relative z-10 px-4">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-border">
+            <div className="flex flex-col gap-4">
+              <h2 className="text-3xl md:text-4xl font-black text-foreground flex items-center gap-4">
+                <span className="p-3 bg-primary rounded-2xl shadow-xl shadow-primary/20">
+                  <Heart className="w-6 h-6 md:w-8 md:h-8 text-white fill-white/20" />
                 </span>
                 {dict.home.recent}
               </h2>
-              <p className="text-slate-400 dark:text-slate-500 text-sm font-bold ml-12">최근 올라온 소중한 사연들입니다</p>
+              <p className="text-foreground/60 text-base md:text-lg font-medium leading-relaxed max-w-xl">
+                {lang === 'ko' ? '최근 올라온 소중한 사연들입니다. 여러분의 따뜻한 관심이 기적을 만듭니다.' : 'Valuable stories posted recently. Your warm interest creates miracles.'}
+              </p>
             </div>
-            <Link href={`/${lang}/search/results`} className="group flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-sm hover:shadow-md transition-all">
-              <span className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">{dict.home.all}</span>
-              <div className="w-6 h-6 rounded-full bg-slate-50 dark:bg-slate-700 flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
-                <Search className="w-3 h-3 text-slate-400 group-hover:text-white transition-colors" />
+            <Link href={`/${lang}/search/results`} className="group flex items-center gap-3 px-8 py-4 bg-foreground text-background rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border border-border">
+              <span className="text-sm md:text-base font-black uppercase tracking-wider">{dict.home.all}</span>
+              <div className="w-6 h-6 rounded-full bg-background/20 flex items-center justify-center group-hover:bg-primary transition-colors">
+                <Search className="w-4 h-4 text-background group-hover:text-white transition-colors" />
               </div>
             </Link>
           </div>

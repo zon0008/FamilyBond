@@ -39,8 +39,12 @@ export async function middleware(request: NextRequest) {
     );
 
     if (!pathnameHasLocale) {
-        request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
-        const redirectResponse = NextResponse.redirect(request.nextUrl);
+        const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
+        const protocol = request.headers.get('x-forwarded-proto') || 'https';
+        const origin = host ? `${protocol}://${host}` : request.nextUrl.origin;
+
+        const redirectUrl = new URL(`/${defaultLocale}${pathname}`, origin);
+        const redirectResponse = NextResponse.redirect(redirectUrl);
         supabaseResponse.cookies.getAll().forEach(c => redirectResponse.cookies.set(c.name, c.value, c));
         return redirectResponse;
     }
