@@ -30,7 +30,7 @@ function NewPostContent() {
     const router = useRouter();
 
     const searchParams = useSearchParams();
-    const editId = searchParams.get('edit');
+    const editId = searchParams.get('edit') || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null);
     const isEditMode = !!editId;
 
     const [loading, setLoading] = useState(false);
@@ -52,9 +52,17 @@ function NewPostContent() {
                 });
                 setImagePreviews(data.images || []);
                 setAudioDataUrl(data.audio || null);
+            } else if (editId === 'mother-hero') {
+                // Pre-fill with original mother story if editing for the first time
+                setFormData({
+                    name: lang === 'ko' ? '최주영' : 'J. Choi',
+                    location: lang === 'ko' ? '대한민국' : 'South Korea',
+                    story: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다. 책상 한편에 어머니 함을 모셔두고, 그 곁에 \'어머니\'라고 정히 적은 메모지를 붙여두었습니다. 매일 마주하는 그 글자가 오늘따라 유난히 눈물겹습니다.\n\n어머니, 당신께서 살아계셨다면 이 화면 속 모습처럼 그렇게 웃고 계셨겠지요. 모질었던 세월 다 잊으시고, 이제는 그저 평안하게... 보고 싶습니다, 어머니.' : 'Mother, looking at your kind face smiling on the screen makes my heart ache. I have placed your urn on one side of the desk and attached a note with \'Mother\' neatly written on it. That word I face every day feels particularly tearful today.\n\nMother, if you were still alive, you would have been smiling just like in this screen. Forgetting all the harsh years, now just in peace... I miss you, Mother.'
+                });
+                setImagePreviews(['/mother_hero.png?v=2.0']);
             }
         }
-    }, [editId]);
+    }, [editId, lang]);
 
     const handleAudioComplete = (blob: Blob | null) => {
         setAudioBlob(blob);
