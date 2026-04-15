@@ -43,7 +43,7 @@ export default async function RootLayout(props: {
             (function() {
               function initKakao() {
                 if (window.Kakao && !window.Kakao.isInitialized()) {
-                  const key = '${process.env.NEXT_PUBLIC_KAKAO_APP_KEY || ""}';
+                  const key = '641031350a454d4554303351d3886562';
                   if (key) window.Kakao.init(key);
                 }
               }

@@ -58,7 +58,7 @@ export default function PostDetailPage() {
                         : "Mother, your kind face smiling on the screen fills my heart with sorrow. I keep your urn on one side of my desk, with a small note that says 'Mother' next to it. I don't know why this single word I face every day feels so heavy yet warm.\n\nI was a child who couldn't even say \"I love you\" properly while you were alive, and only now am I managing to write it in this empty input box. The words I couldn't finish were actually \"I'm sorry.\" Not visiting more often, not sharing delicious food, and every moment I couldn't hold your tired hands again remains a regret.\n\nThough I cannot convey my heart now, I hope this earnest wish reaches you on the wind. Mother, I pray you are at peace without any pain. Remembering the unconditional love you gave me, I will live on steadfastly as your proud child. I miss you dearly.",
                     location: lang === 'ko' ? '대한민국' : 'South Korea',
                     date: '2026. 4. 8.',
-                    images: ['/mother_hero.png?v=1.5'],
+                    images: ['/mother_hero.png?v=1.7'],
                     audio: null
                 });
             } else if (id.startsWith('demo-')) {
@@ -96,7 +96,7 @@ export default function PostDetailPage() {
                         content: {
                             title: 'FamilyBond - 소중한 인연',
                             description: text.substring(0, 100),
-                            imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.6',
+                            imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.7',
                             link: finalLink,
                         },
                         buttons: [{ title: '사연 보기', link: finalLink }]

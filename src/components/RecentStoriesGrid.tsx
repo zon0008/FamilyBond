@@ -49,10 +49,11 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                 try {
                     const data = JSON.parse(localStorage.getItem(key) || '{}');
 
-                    // Filter out any story that might contain 'jindo' or 'dog' in its content or images
+                    // Filter out any story that might contain 'jindo', 'dog', or the specific unsplash dog image
                     const content = (data.story || '').toLowerCase();
                     const title = (data.title || '').toLowerCase();
-                    const hasTestKeyword = content.includes('jindo') || content.includes('dog') || title.includes('jindo') || title.includes('dog');
+                    const imageUrl = (data.images && data.images.length > 0 ? data.images[0] : (data.image || '')).toLowerCase();
+                    const hasTestKeyword = content.includes('jindo') || content.includes('dog') || title.includes('jindo') || title.includes('dog') || imageUrl.includes('photo-1518020382113');
 
                     if (hasTestKeyword) continue;
 
@@ -64,7 +65,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                         location: data.location,
                         date: data.date,
                         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.6'
+                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.7'
                     });
                 } catch (e) {
                     console.error("Failed to parse mock post", e);
@@ -74,8 +75,8 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
         mockStories.sort((a, b) => b.id.localeCompare(a.id));
 
         // Ensure mother-hero (initialStories[0]) is ALWAYS at index 0 and highlighted
-        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.6' }));
-        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.6' };
+        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.7' }));
+        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.7' };
 
         setStories([motherStory, ...mockStories, ...otherInitial]);
     }, [initialStories]);
