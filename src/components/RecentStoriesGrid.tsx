@@ -42,45 +42,10 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
         }
         keysToRemove.forEach(k => localStorage.removeItem(k));
 
-        const mockStories = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith('mock_post_demo-')) {
-                try {
-                    const data = JSON.parse(localStorage.getItem(key) || '{}');
-
-                    // Filter out any story that might contain 'jindo', 'dog', or the specific unsplash dog image
-                    const content = (data.story || '').toLowerCase();
-                    const title = (data.title || '').toLowerCase();
-                    const imageUrl = (data.images && data.images.length > 0 ? data.images[0] : (data.image || '')).toLowerCase();
-                    const hasTestKeyword = content.includes('jindo') || content.includes('dog') || title.includes('jindo') || title.includes('dog') || imageUrl.includes('photo-1518020382113');
-
-                    if (hasTestKeyword) continue;
-
-                    const id = key.replace('mock_post_', '');
-                    const isMotherStory = data.name === '최주영' || data.name === 'J. Choi';
-
-                    mockStories.push({
-                        id,
-                        title: data.story?.split('\n')[0].substring(0, 30) || '제목 없음',
-                        name: data.name,
-                        location: data.location,
-                        date: data.date,
-                        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: isMotherStory ? '/mother_hero.png?v=1.7' : ((data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.7')
-                    });
-                } catch (e) {
-                    console.error("Failed to parse mock post", e);
-                }
-            }
-        }
-        mockStories.sort((a, b) => b.id.localeCompare(a.id));
-
-        // Ensure mother-hero (initialStories[0]) is ALWAYS at index 0 and highlighted
-        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.7' }));
-        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.7' };
-
-        setStories([motherStory, ...mockStories, ...otherInitial]);
+        // FORCE: Only show the Mother Story as the primary content to ensure 100% integrity
+        // "나머지는 인물을 지워줘" requirement implementation
+        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.9' };
+        setStories([motherStory]);
     }, [initialStories]);
 
     const handleShare = async (story: any, type: 'kakao' | 'fb' | 'copy') => {
@@ -172,7 +137,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
 
                     <Link
                         href={`/${lang}/post/${story.id}`}
-                        className={`group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full ${index === 0 ? 'border-[6px] border-[#22c55e] shadow-[0_0_30px_rgba(34,197,94,0.4)] ring-8 ring-[#22c55e]/10 z-10' : ''}`}
+                        className={`group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full ${index === 0 ? 'border-[8px] !border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.6)] ring-8 ring-green-500/20 z-10 scale-[1.02]' : ''}`}
                     >
                         <div className="relative w-full h-56 overflow-hidden">
                             <Image src={story.image || "https://picsum.photos/400/200"} alt="Story image" fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />

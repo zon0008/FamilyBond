@@ -9,7 +9,7 @@ import RecentStoriesGrid from "@/components/RecentStoriesGrid";
 import PullToRefresh from "@/components/PullToRefresh";
 
 const RECENT_STORIES = [
-  { id: "mother-hero", title: "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다", name: "최주영", location: "대한민국", date: "2026. 4. 8.", tz: "Asia/Seoul", image: "/mother_hero.png?v=1.7" },
+  { id: "mother-hero", title: "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다", name: "최주영", location: "대한민국", date: "2026. 4. 8.", tz: "Asia/Seoul", image: "/mother_hero.png?v=1.8" },
 ];
 
 export default async function Home(props: { params: Promise<{ lang: string }> }) {
