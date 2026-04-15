@@ -30,8 +30,15 @@ function NewPostContent() {
     const router = useRouter();
 
     const searchParams = useSearchParams();
-    const editId = searchParams.get('edit') || searchParams.get('id') || (typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('edit') || new URLSearchParams(window.location.search).get('id')) : null);
+    const [editId, setEditId] = useState<string | null>(null);
     const isEditMode = !!editId;
+
+    useEffect(() => {
+        // useSearchParams와 window.location.search 모두를 더 크로스체크하여 즉각 수집
+        const idFromParams = searchParams.get('edit') || searchParams.get('id');
+        const idFromWindow = typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('edit') || new URLSearchParams(window.location.search).get('id')) : null;
+        setEditId(idFromParams || idFromWindow);
+    }, [searchParams]);
 
     const [loading, setLoading] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);

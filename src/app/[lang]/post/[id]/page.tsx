@@ -52,8 +52,8 @@ export default function PostDetailPage() {
         if (typeof id === 'string') {
             if (id === 'mother-hero') {
                 const saved = localStorage.getItem(`mock_post_mother-hero`);
-                // 필터: '자갈치'가 포함된 잘못된 저장 데이터는 무시하고 원본으로 덮어씀
-                if (saved && !saved.includes('자갈치')) {
+                // 필터: '자갈치'가 포함되었거나 내용이 오염된 저장 데이터는 무시하고 정해진 원본으로 덮어씀
+                if (saved && !saved.includes('자갈치') && !saved.includes('자갈치시장') && saved.includes('함')) {
                     setMockData(JSON.parse(saved));
                 } else {
                     setMockData({
@@ -191,11 +191,11 @@ export default function PostDetailPage() {
                 </Link>
                 <div className="flex items-center gap-3">
                     <Link href={`/${lang}/post/new?edit=${id}`}
-                        className="fixed bottom-40 right-6 z-[9999] flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black rounded-full transition shadow-[0_15px_40px_rgba(245,158,11,0.7)] hover:scale-110 active:scale-95 animate-bounce border-4 border-white/40"
+                        className="fixed top-24 right-4 z-[9999] flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black rounded-full transition shadow-[0_15px_40px_rgba(245,158,11,0.8)] hover:scale-110 active:scale-95 animate-pulse border-4 border-white/40 group"
                         style={{ zIndex: 9999 }}
                     >
-                        <SquarePen className="w-8 h-8" />
-                        <span className="text-xl">{lang === 'ko' ? '사연 수정하기 (지금 바로!)' : 'Edit Story (Now!)'}</span>
+                        <SquarePen className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+                        <span className="text-lg">{lang === 'ko' ? '사연 수정하기 (지금 바로!)' : 'Edit Story (Now!)'}</span>
                     </Link>
 
                     <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">
