@@ -33,6 +33,9 @@ const clientDict: Record<string, any> = {
 
 export default function PostDetailPage() {
     const { lang, id } = useParams();
+    const searchParams = useSearchParams();
+    const editId = searchParams.get('edit') || searchParams.get('id') || (typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('edit') || new URLSearchParams(window.location.search).get('id')) : null);
+    const isEditMode = !!editId;
     const router = useRouter();
     const d = clientDict[lang as string] || clientDict['ko'];
     const supabase = createBrowserClient(
@@ -189,7 +192,10 @@ export default function PostDetailPage() {
                     {d.back}
                 </Link>
                 <div className="flex items-center gap-3">
-                    <Link href={`/${lang}/post/new?edit=${id}`} className="fixed bottom-32 right-6 z-[9999] flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black rounded-full transition shadow-[0_15px_40px_rgba(245,158,11,0.6)] hover:scale-110 active:scale-95 animate-bounce border-2 border-white/20">
+                    <Link href={`/${lang}/post/new?edit=${id}`}
+                        className="fixed bottom-40 right-6 z-[9999] flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black rounded-full transition shadow-[0_15px_40px_rgba(245,158,11,0.7)] hover:scale-110 active:scale-95 animate-bounce border-4 border-white/40"
+                        style={{ zIndex: 9999 }}
+                    >
                         <SquarePen className="w-8 h-8" />
                         <span className="text-xl">{lang === 'ko' ? '사연 수정하기 (지금 바로!)' : 'Edit Story (Now!)'}</span>
                     </Link>
