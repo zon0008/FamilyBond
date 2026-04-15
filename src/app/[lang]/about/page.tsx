@@ -210,7 +210,7 @@ export default function AboutPage() {
                     </div>
                     {/* UPGRADE_REQUIRED: 실제 데이터 연동 시 stories prop을 전달하세요 */}
                     <RecentStoriesGrid initialStories={[
-                        { id: 'mother-hero', name: lang === 'ko' ? '최주영' : 'J. Choi', title: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다' : 'Mother, looking at your kind face smiling on the screen', date: '2026. 4. 8.', location: lang === 'ko' ? '대한민국' : 'South Korea', image: '/mother_hero.png?v=1.6' },
+                        { id: 'mother-hero', name: lang === 'ko' ? '최주영' : 'J. Choi', title: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다' : 'Mother, looking at your kind face smiling on the screen', date: '2026. 4. 8.', location: lang === 'ko' ? '대한민국' : 'South Korea', image: '/mother_hero.png?v=1.7' },
                     ]} lang={lang as string} dict={{}} />
                 </div>
             </section>
