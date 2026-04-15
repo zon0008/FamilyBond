@@ -8,9 +8,9 @@ import RecentStoriesGrid from "@/components/RecentStoriesGrid";
 import PullToRefresh from "@/components/PullToRefresh";
 
 const RECENT_STORIES = [
-  { id: "mother-hero", title: "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보며", name: "최주영", location: "대한민국", date: "2026. 4. 8.", tz: "Asia/Seoul", image: "/mother_hero.png" },
-  { id: "1", title: "1995년 서울역에서 헤어진 동생을 찾습니다", name: "김영희", location: "서울특별시", date: "2026.04.05", tz: "Asia/Seoul", image: "https://images.unsplash.com/photo-1542128962-9d50ad7bf714?q=80&w=800&auto=format&fit=crop" },
-  { id: "2", title: "가슴에 점이 있는 오빠(박철수)를 찾아요", name: "박지은", location: "부산광역시", date: "2026.04.04", tz: "Asia/Seoul", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "mother-hero", title: "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보며", name: "최주영", location: "대한민국", date: "2026. 4. 8.", tz: "Asia/Seoul", image: "/mother_hero.png?v=1.1" },
+  { id: "1", title: "1995년 서울역에서 헤어진 동생을 찾습니다", name: "김영희", location: "서울특별시", date: "2026.04.05", tz: "Asia/Seoul", image: "https://images.unsplash.com/photo-1542128962-9d50ad7bf714?q=80&w=800&auto=format&fit=crop&v=1.1" },
+  { id: "2", title: "가슴에 점이 있는 오빠(박철수)를 찾아요", name: "박지은", location: "부산광역시", date: "2026.04.04", tz: "Asia/Seoul", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop&v=1.1" },
 ];
 
 export default async function Home(props: { params: Promise<{ lang: string }> }) {

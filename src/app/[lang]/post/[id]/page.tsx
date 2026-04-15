@@ -57,7 +57,7 @@ export default function PostDetailPage() {
                         : "Mother, looking at your kind face smiling on the screen, my eyes well up with tears.\nI still remember that hand I lost at Busan Jagalchi Market in the winter of 1982.\nAt that time, you were wearing a red sweater, and your voice calling my name 'Joo-young' still rings in my ears.\nMother, now I am looking for you. Please just stay healthy and alive.",
                     location: lang === 'ko' ? '대한민국' : 'South Korea',
                     date: '2026. 4. 8.',
-                    images: ['/mother_hero.png'],
+                    images: ['/mother_hero.png?v=1.1'],
                     audio: null
                 });
             } else if (id.startsWith('demo-')) {

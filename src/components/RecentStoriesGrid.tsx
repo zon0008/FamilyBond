@@ -26,6 +26,11 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
     const [copiedId, setCopiedId] = useState<string | null>(null);
 
     useEffect(() => {
+        // Clear any legacy mock data that might conflict with core stories
+        localStorage.removeItem('mock_post_mother-hero');
+        localStorage.removeItem('mock_post_1');
+        localStorage.removeItem('mock_post_2');
+
         const mockStories = [];
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
@@ -40,7 +45,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                         location: data.location,
                         date: data.date,
                         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: data.images && data.images.length > 0 ? data.images[0] : (data.image || 'https://picsum.photos/400/200')
+                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || 'https://picsum.photos/400/200')) + '?v=1.1'
                     });
                 } catch (e) {
                     console.error("Failed to parse mock post", e);
@@ -48,9 +53,12 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
             }
         }
         mockStories.sort((a, b) => b.id.localeCompare(a.id));
-        if (mockStories.length > 0) {
-            setStories([...mockStories, ...initialStories]);
-        }
+
+        // Ensure mother-hero (initialStories[0]) is ALWAYS at index 0 and highlighted
+        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.1' }));
+        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.1' };
+
+        setStories([motherStory, ...mockStories, ...otherInitial]);
     }, [initialStories]);
 
     const handleShare = async (story: any, type: 'kakao' | 'fb' | 'copy') => {
