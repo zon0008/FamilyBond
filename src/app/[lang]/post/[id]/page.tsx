@@ -82,18 +82,26 @@ export default function PostDetailPage() {
 
         if (type === 'kakao') {
             // @ts-ignore
-            if (window.Kakao && window.Kakao.isInitialized()) {
-                // @ts-ignore
-                window.Kakao.Share.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                        title: 'FamilyBond - 소중한 인연',
-                        description: text.substring(0, 100),
-                        imageUrl: mockData?.images?.[0] || 'https://images.unsplash.com/photo-1511895426328-dc8714191300',
-                        link: { mobileWebUrl: url, webUrl: url },
-                    },
-                    buttons: [{ title: '사연 보기', link: { mobileWebUrl: url, webUrl: url } }]
-                });
+            const K = window.Kakao;
+            if (K) {
+                try {
+                    const appKey = process.env.NEXT_PUBLIC_KAKAO_APP_KEY || '641031350a454d4554303351d3886562';
+                    if (!K.isInitialized()) K.init(appKey);
+
+                    const finalUrl = `https://family-bond-final.vercel.app/${lang}/post/${id}`;
+                    K.Share.sendDefault({
+                        objectType: 'feed',
+                        content: {
+                            title: 'FamilyBond - 소중한 인연',
+                            description: text.substring(0, 100),
+                            imageUrl: mockData?.images?.[0] || 'https://family-bond-final.vercel.app/mother_hero.png?v=1.5',
+                            link: { mobileWebUrl: finalUrl, webUrl: finalUrl },
+                        },
+                        buttons: [{ title: '사연 보기', link: { mobileWebUrl: finalUrl, webUrl: finalUrl } }]
+                    });
+                } catch (e) {
+                    console.error("Kakao share error in detail page:", e);
+                }
             } else {
                 alert(`[DEMO] 카카오톡으로 사연을 전파합니다.\n\n공유 텍스트: ${text.substring(0, 50)}...`);
             }
@@ -170,199 +178,179 @@ export default function PostDetailPage() {
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     {d.back}
                 </Link>
-                <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 hover:text-indigo-700 dark:hover:text-cyan-400 font-extrabold rounded-xl transition shadow-sm text-sm group">
+                <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">
                     <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
                     {lang === 'ko' ? '사연 남기기' : 'Post a Story'}
                 </Link>
             </div>
 
-            <article className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-colors">
-                <div className="relative w-full h-72 md:h-96 bg-gray-100 border-b border-gray-100 group/carousel">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentImgIdx}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.4 }}
-                            className="absolute inset-0 cursor-zoom-in"
-                        >
-                            <Image src={images[currentImgIdx]} alt={`Story Image ${currentImgIdx}`} fill className="object-cover" unoptimized />
-                        </motion.div>
-                    </AnimatePresence>
-
-                    {images.length > 1 && (
-                        <>
-                            <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white rounded-full transition-all opacity-0 group-hover/carousel:opacity-100 backdrop-blur-sm">
-                                <ChevronLeft className="w-6 h-6" />
-                            </button>
-                            <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 text-white rounded-full transition-all opacity-0 group-hover/carousel:opacity-100 backdrop-blur-sm">
-                                <ChevronRight className="w-6 h-6" />
-                            </button>
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 p-1.5 bg-black/20 backdrop-blur-md rounded-full">
-                                {images.map((_: any, i: number) => (
-                                    <div
-                                        key={i}
-                                        onClick={() => setCurrentImgIdx(i)}
-                                        className={`w-1.5 h-1.5 rounded-full cursor-pointer transition-all ${i === currentImgIdx ? 'bg-white w-4' : 'bg-white/50 hover:bg-white/80'}`}
-                                    />
-                                ))}
+            {mockData && (
+                <article className="bg-[#ffffff] !important rounded-3xl shadow-2xl overflow-hidden border border-gray-100 transition-colors mb-12">
+                    <div className="relative w-full h-72 md:h-[500px] bg-gray-100 border-b border-gray-100 group/carousel">
+                        <Image src={images[currentImgIdx]} alt="Main Story" fill className="object-cover" unoptimized priority />
+                        {mockData.audio && (
+                            <div className="absolute bottom-6 left-6 right-6 z-10">
+                                <AudioPlayer src={mockData.audio} />
                             </div>
-                        </>
-                    )}
-                </div>
-
-                <div className="p-8 pb-6 border-b border-gray-100">
-                    <div className="flex items-center gap-3 mb-5">
-                        <span className="px-3 py-1 bg-blue-50 text-primary text-xs font-bold rounded-full border border-blue-100">#{id}</span>
-                        <div className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100" title={d.trustScore}>
-                            <ShieldCheck className="w-3.5 h-3.5" /> {d.trustScore}: 98%
-                        </div>
+                        )}
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
-                        {mockData ? `${mockData.story.substring(0, 30)}...` : '소중한 가족을 찾고 있습니다'}
-                    </h1>
-
-                    <div className="flex flex-wrap gap-5 text-sm text-slate-600 bg-gray-50/80 p-4 rounded-xl items-center border border-gray-100">
-                        <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-1 rounded transition">
-                            <strong className="text-slate-900">{d.author}:</strong> <span className="text-slate-900 font-bold">{mockData ? mockData.name : '제보자'}</span>
-                        </span>
-                        <span className="flex items-center gap-1.5 text-slate-500"><MapPin className="w-4 h-4" /> {mockData ? mockData.location : '지역 정보 없음'}</span>
-                        <span className="flex items-center gap-1.5 text-slate-500"><Calendar className="w-4 h-4" /> {mockData ? mockData.date : '일자 정보 없음'}</span>
-
-                        <button onClick={handleShare} className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 shadow-sm rounded-lg hover:border-primary transition font-bold text-slate-700">
-                            <Share2 className="w-4 h-4" /> 공유하기
-                        </button>
-                    </div>
-
-                    {matchStatus !== 'idle' && (
-                        <div className={`mt-6 p-5 rounded-2xl border flex items-center justify-between transition-all duration-700 ${matchStatus === 'approved' ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'}`}>
-                            <div className="flex flex-col">
-                                <span className={`text-xs font-bold uppercase tracking-wider mb-1 ${matchStatus === 'approved' ? 'text-green-600' : 'text-orange-600'}`}>
-                                    {matchStatus === 'approved' ? 'Match Approved' : 'Pending Verification'}
+                    <div className="p-8 md:p-14 flex flex-col gap-12">
+                        <div className="flex flex-col gap-8 border-b border-gray-100 pb-10">
+                            <div className="flex flex-wrap items-center gap-3">
+                                <span className="px-4 py-1.5 bg-[#1a1a1a]/5 text-[#1a1a1a]/60 text-[11px] font-black uppercase tracking-widest rounded-full border border-[#1a1a1a]/10">
+                                    # {id}
                                 </span>
-                                <h3 className={`text-2xl font-black font-mono tracking-widest ${matchStatus === 'approved' ? 'text-slate-900' : 'text-slate-400 blur-[2px]'}`}>
-                                    {matchStatus === 'approved' ? '010-8291-3844' : '010-****-****'}
-                                </h3>
+                                <span className="px-4 py-1.5 bg-green-50 text-green-600 text-[11px] font-black uppercase tracking-widest rounded-full border border-green-100 flex items-center gap-2">
+                                    <Heart className="w-4 h-4 fill-green-600" />
+                                    {lang === 'ko' ? '신뢰도 지수: 100%' : 'Trust Score: 100%'}
+                                </span>
                             </div>
-                            <div className={`p-4 rounded-full ${matchStatus === 'approved' ? 'bg-white' : 'bg-orange-100'}`}>
-                                {matchStatus === 'approved' ? <Unlock className="w-6 h-6 text-green-500" /> : <Lock className="w-6 h-6 text-orange-500" />}
+
+                            <h1 className="text-3xl md:text-5xl font-black text-[#1a1a1a] !important leading-[1.1] tracking-tighter" style={{ textWrap: 'balance' }}>
+                                {mockData.title || (lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다' : 'Mother, your kind face smiling on the screen fills my heart with sorrow')}
+                            </h1>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50/80 p-8 rounded-[2rem] border border-gray-100">
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-widest">{lang === 'ko' ? '찾는 이' : 'Poster'}</span>
+                                    <span className="text-base font-bold text-[#1a1a1a]">{mockData.name}</span>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-widest">{lang === 'ko' ? '위치' : 'Location'}</span>
+                                    <div className="flex items-center gap-2">
+                                        <MapPin className="w-4 h-4 text-[#1a1a1a]/40" />
+                                        <span className="text-base font-bold text-[#1a1a1a]">{mockData.location}</span>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-[10px] font-black text-[#1a1a1a]/40 uppercase tracking-widest">{lang === 'ko' ? '날짜' : 'Date'}</span>
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="w-4 h-4 text-[#1a1a1a]/40" />
+                                        <span className="text-base font-bold text-[#1a1a1a]">{mockData.date}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    )}
-                </div>
 
-                <div className="p-8 prose prose-gray max-w-none text-slate-900 leading-relaxed text-lg pb-8">
-                    {mockData?.audio && (
-                        <div className="mb-8 not-prose">
-                            <AudioPlayer src={mockData.audio} />
+                        <div className="flex flex-col gap-10">
+                            <div className="text-xl md:text-2xl text-[#1a1a1a] !important font-medium leading-[1.9] whitespace-pre-wrap tracking-tight">
+                                {mockData.story}
+                            </div>
                         </div>
-                    )}
-                    <p className="whitespace-pre-line">{mockData ? mockData.story : '사연 내용을 불러오는 중입니다...'}</p>
-                </div>
-            </article>
 
-            {/* 사연 전파하기 섹션 */}
-            <div className="mt-8 mb-24 p-8 relative overflow-hidden rounded-3xl border border-indigo-100/50 dark:border-indigo-900/30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/20 dark:to-blue-950/20 z-0" />
-                <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], x: [0, 50, 0], y: [0, -30, 0] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 dark:bg-cyan-400/10 rounded-full blur-3xl z-0"
-                />
+                        {matchStatus !== 'idle' && (
+                            <div className={`p-8 rounded-[2.5rem] border-2 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-1000 ${matchStatus === 'approved' ? 'bg-green-50 border-green-200 shadow-2xl shadow-green-200/20' : 'bg-amber-50 border-amber-200'}`}>
+                                <div className="flex flex-col text-center md:text-left">
+                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] mb-2 ${matchStatus === 'approved' ? 'text-green-600' : 'text-amber-600'}`}>
+                                        {matchStatus === 'approved' ? 'Identity Verified' : 'Checking for Match'}
+                                    </span>
+                                    <h3 className={`text-3xl md:text-4xl font-black tracking-tighter text-[#1a1a1a] ${matchStatus !== 'approved' && 'blur-[4px] select-none opacity-40'}`}>
+                                        {matchStatus === 'approved' ? '010-8291-3844' : '010-****-****'}
+                                    </h3>
+                                </div>
+                                <div className={`p-6 rounded-full ${matchStatus === 'approved' ? 'bg-white shadow-xl' : 'bg-amber-100 animate-pulse'}`}>
+                                    {matchStatus === 'approved' ? <Unlock className="w-8 h-8 text-green-500" /> : <Lock className="w-8 h-8 text-amber-500" />}
+                                </div>
+                            </div>
+                        )}
 
-                <div className="relative z-10 flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center shadow-sm mb-4">
-                        <Share2 className="w-8 h-8 text-primary dark:text-cyan-400" />
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <button onClick={handleShare} className="flex-1 flex items-center justify-center gap-3 px-8 py-5 bg-[#1a1a1a] text-white rounded-[1.5rem] text-lg font-black hover:bg-black transition-all shadow-xl active:scale-95">
+                                <Share2 className="w-6 h-6" />
+                                {lang === 'ko' ? '이 사연 공유하기' : 'Share this Story'}
+                            </button>
+                            <button onClick={simulateAdminApproval} className="flex items-center justify-center gap-3 px-8 py-5 bg-white text-[#1a1a1a] rounded-[1.5rem] text-lg font-black border-2 border-[#1a1a1a]/10 hover:border-[#1a1a1a] transition-all active:scale-95">
+                                <ShieldCheck className="w-6 h-6" />
+                                {lang === 'ko' ? '관리자용 매칭 승인' : 'Admin: Approve'}
+                            </button>
+                        </div>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{d.spreadTheWord}</h2>
-                    <p className="text-gray-600 dark:text-slate-400 max-w-md mx-auto mb-8">
-                        공유 한 번이 누군가에게는 평생의 기적이 될 수 있습니다. <br />
-                        우리 사회의 따뜻한 관심을 모아주세요.
-                    </p>
+                </article>
+            )}
 
-                    <div className="flex flex-wrap justify-center gap-4">
-                        <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(254, 229, 0, 0.4)" }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleSnsShare('kakao')}
-                            className="flex items-center gap-3 px-6 py-4 bg-[#FEE500] text-[#3c1e1e] font-bold rounded-2xl shadow-md border border-yellow-200 transition-shadow"
-                        >
+            <div className="p-10 relative overflow-hidden rounded-[3rem] border border-gray-100 bg-gray-50/50 mb-32">
+                <div className="relative z-10 flex flex-col items-center text-center gap-6">
+                    <div className="w-16 h-16 bg-[#FEE500] rounded-[1.5rem] flex items-center justify-center shadow-xl shadow-yellow-200">
+                        <MessageCircleMore className="w-8 h-8 text-[#3c1e1e] fill-current" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <h2 className="text-2xl md:text-3xl font-black text-[#1a1a1a]">{d.spreadTheWord}</h2>
+                        <p className="text-[#1a1a1a]/60 text-base font-medium leading-relaxed max-w-sm">
+                            {lang === 'ko' ? '공유 한 번이 누군가에게는 평생의 기적이 됩니다. 우리 사회의 따뜻한 관심을 모아주세요.' : 'One share can be a miracle for someone. Please gather warm attention from our society.'}
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4 w-full">
+                        <button onClick={() => handleSnsShare('kakao')} className="flex-1 min-w-[200px] flex items-center justify-center gap-3 px-8 py-4 bg-[#FEE500] text-[#3c1e1e] font-black rounded-2xl shadow-lg border border-yellow-200 hover:-translate-y-1 transition-all">
                             <MessageCircleMore className="w-6 h-6 fill-current" />
                             {d.shareKakao}
-                        </motion.button>
-                        <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(24, 119, 242, 0.4)" }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleSnsShare('fb')}
-                            className="flex items-center gap-3 px-6 py-4 bg-[#1877F2] text-white font-bold rounded-2xl shadow-md border border-blue-400/30 transition-shadow"
-                        >
-                            <Send className="w-6 h-6 fill-current" />
-                            {d.shareFb}
-                        </motion.button>
-                        <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(99, 102, 241, 0.2)" }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleSnsShare('copy')}
-                            className="flex items-center gap-3 px-6 py-4 bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-bold rounded-2xl shadow-md border border-gray-200 dark:border-slate-700 transition-shadow"
-                        >
+                        </button>
+                        <button onClick={() => handleSnsShare('copy')} className="flex-1 min-w-[200px] flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#1a1a1a] font-black rounded-2xl shadow-lg border border-gray-200 hover:-translate-y-1 transition-all">
                             {copied ? <Check className="w-6 h-6 text-green-500" /> : <Copy className="w-6 h-6" />}
                             {d.copyLink}
-                        </motion.button>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div className={`fixed bottom-0 left-0 right-0 p-4 transform transition-transform duration-500 z-50 flex justify-center ${showFloating || funnelStep > 0 ? 'translate-y-0' : 'translate-y-full'}`}>
-                <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 p-6 flex flex-col gap-4 animate-fade-in-up transition-colors">
+            <div className={`fixed bottom-0 left-0 right-0 p-6 transform transition-transform duration-500 z-50 flex justify-center ${showFloating || funnelStep > 0 ? 'translate-y-0' : 'translate-y-full'}`}>
+                <div className="w-full max-w-2xl bg-[#ffffff] rounded-[2rem] shadow-[0_-20px_60px_rgba(0,0,0,0.1)] border border-gray-100 p-8 flex flex-col gap-6">
                     {funnelStep === 0 && matchStatus === 'idle' && (
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <Heart className="w-5 h-5 text-red-500 fill-red-100 dark:fill-red-900/30" />
-                                {d.heart}
-                            </p>
-                            <button onClick={handleNextStep} className="px-6 py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-bold rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 transition shadow-sm active:scale-95">
-                                매칭 요청하기
+                        <div className="flex items-center justify-between gap-6">
+                            <div className="flex flex-col gap-1">
+                                <p className="font-black text-[#1a1a1a] text-xl flex items-center gap-2">
+                                    <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+                                    {d.heart}
+                                </p>
+                                <p className="text-sm text-[#1a1a1a]/40 font-bold uppercase tracking-widest">Connect your family bonding</p>
+                            </div>
+                            <button onClick={handleNextStep} className="px-10 py-5 bg-[#1a1a1a] text-white font-black rounded-2xl hover:bg-black transition shadow-xl active:scale-95">
+                                {lang === 'ko' ? '매칭 요청하기' : 'Request Match'}
                             </button>
                         </div>
                     )}
                     {funnelStep === 0 && matchStatus !== 'idle' && (
-                        <div className="flex items-center justify-center p-2 text-gray-500 dark:text-slate-400 font-medium">
-                            <ShieldCheck className="w-5 h-5 text-gray-400 dark:text-slate-500 mr-2" />
-                            {matchStatus === 'approved' ? '진심으로 가족 상봉을 축하합니다!' : '보안 매칭을 위해 관리자가 검토 중입니다.'}
+                        <div className="flex items-center justify-center p-2 text-[#1a1a1a]/60 font-black tracking-tight">
+                            <ShieldCheck className="w-6 h-6 text-green-500 mr-3" />
+                            {matchStatus === 'approved' ? '진심으로 가족 상봉을 축하드립니다!' : '보안 매칭을 위해 관리자가 검토 중입니다.'}
                         </div>
                     )}
                     {funnelStep === 1 && (
-                        <div className="flex flex-col gap-3 animate-fade-in">
-                            <label className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                <Mail className="w-5 h-5 text-primary dark:text-cyan-400" />
+                        <div className="flex flex-col gap-5 animate-fade-in">
+                            <label className="font-black text-[#1a1a1a] text-xl flex items-center gap-3">
+                                <Mail className="w-6 h-6 text-primary" />
                                 {d.messageTitle}
                             </label>
-                            <textarea placeholder={d.messagePlaceholder} className="w-full p-3 border border-gray-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white resize-none h-20 placeholder:text-gray-400 dark:placeholder:text-gray-600" />
-                            <button onClick={handleNextStep} className="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition shadow-sm active:scale-95">
-                                다음
+                            <textarea placeholder={d.messagePlaceholder} className="w-full p-5 border-2 border-gray-100 rounded-2xl focus:outline-none focus:border-primary bg-gray-50 text-[#1a1a1a] font-bold resize-none h-32 placeholder:text-gray-300" />
+                            <button onClick={handleNextStep} className="w-full py-5 bg-[#1a1a1a] text-white rounded-2xl font-black text-lg hover:bg-black transition shadow-xl active:scale-95">
+                                {lang === 'ko' ? '다음 단계로' : 'Next Step'}
                             </button>
                         </div>
                     )}
                     {funnelStep === 2 && (
-                        <div className="flex flex-col gap-4 animate-fade-in">
-                            <label className="flex items-start gap-3 cursor-pointer">
-                                <input type="checkbox" className="w-5 h-5 mt-0.5 rounded border-gray-300 dark:border-slate-700 text-primary focus:ring-primary bg-white dark:bg-slate-800" defaultChecked />
-                                <span className="text-gray-700 dark:text-slate-300 font-medium leading-snug">{d.notify} <br /><span className="text-xs text-gray-500 dark:text-slate-500 font-normal">업데이트 시 이메일 수신 동의</span></span>
+                        <div className="flex flex-col gap-6 animate-fade-in">
+                            <label className="flex items-start gap-4 cursor-pointer p-6 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-primary/20 transition-all">
+                                <input type="checkbox" className="w-6 h-6 mt-1 rounded-full border-gray-300 text-primary focus:ring-primary" defaultChecked />
+                                <div className="flex flex-col">
+                                    <span className="text-[#1a1a1a] font-black text-lg leading-tight">{d.notify}</span>
+                                    <span className="text-sm text-[#1a1a1a]/40 font-bold">{lang === 'ko' ? '업데이트 시 이메일 수신 동의' : 'Agree to receive status updates'}</span>
+                                </div>
                             </label>
-                            <button onClick={handleNextStep} className="w-full py-3 bg-gray-900 dark:bg-primary text-white rounded-xl font-bold hover:bg-black dark:hover:brightness-110 transition shadow-sm flex justify-center items-center gap-2 active:scale-95">
-                                <ShieldCheck className="w-5 h-5" />
+                            <button onClick={handleNextStep} className="w-full py-5 bg-primary text-white rounded-2xl font-black text-xl hover:brightness-110 transition shadow-2xl shadow-primary/30 flex justify-center items-center gap-3 active:scale-95">
+                                <ShieldCheck className="w-7 h-7" />
                                 {d.submit}
                             </button>
                         </div>
                     )}
                     {funnelStep === 3 && (
-                        <div className="flex flex-col items-center gap-2 animate-fade-in w-full">
-                            <h3 className="font-bold text-gray-900 dark:text-white mb-2">{d.waitingAd}</h3>
-                            <AdUnit type="fullscreen" className="!my-0 rounded-xl w-full h-48 md:h-64 dark:opacity-90" />
-                            <div className="w-full h-2 mt-4 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-accent animate-[pulse_5s_ease-in-out_forwards] w-full origin-left" style={{ animation: 'pastelFlow 5s linear forwards' }} />
+                        <div className="flex flex-col items-center gap-6 animate-fade-in w-full py-4 text-center">
+                            <div className="flex flex-col gap-2">
+                                <h3 className="font-black text-[#1a1a1a] text-2xl">{d.waitingAd}</h3>
+                                <p className="text-[#1a1a1a]/40 font-bold text-sm">준비가 완료될 때까지 잠시만 기다려주세요</p>
+                            </div>
+                            <AdUnit type="banner" className="!my-0 rounded-2xl w-full h-32 border border-gray-100" />
+                            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary animate-pulse w-full origin-left" />
                             </div>
                         </div>
                     )}

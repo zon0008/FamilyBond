@@ -47,10 +47,12 @@ export default function AuthHeader({ lang, homeLabel, loginLabel }: { lang: stri
             const K = window.Kakao;
             const appKey = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
 
-            if (K && appKey) {
+            if (K) {
                 try {
+                    // Force initialize if not already
+                    const finalAppKey = appKey || '641031350a454d4554303351d3886562'; // Fallback to known good key if missing
                     if (!K.isInitialized()) {
-                        K.init(appKey);
+                        K.init(finalAppKey);
                     }
 
                     if (K.isInitialized()) {
@@ -59,10 +61,19 @@ export default function AuthHeader({ lang, homeLabel, loginLabel }: { lang: stri
                             content: {
                                 title: shareTitle,
                                 description: shareDesc,
-                                imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop',
-                                link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+                                imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.5',
+                                link: {
+                                    mobileWebUrl: 'https://family-bond-final.vercel.app/' + lang,
+                                    webUrl: 'https://family-bond-final.vercel.app/' + lang
+                                },
                             },
-                            buttons: [{ title: '서비스 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
+                            buttons: [{
+                                title: '서비스 보기',
+                                link: {
+                                    mobileWebUrl: 'https://family-bond-final.vercel.app/' + lang,
+                                    webUrl: 'https://family-bond-final.vercel.app/' + lang
+                                }
+                            }]
                         });
                         return;
                     }
