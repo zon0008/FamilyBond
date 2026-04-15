@@ -51,16 +51,6 @@ export default function PostDetailPage() {
     useEffect(() => {
         if (typeof id === 'string') {
             if (id === 'mother-hero') {
-                setMockData({
-                    name: lang === 'ko' ? '최주영' : 'J. Choi',
-                    story: lang === 'ko'
-                        ? "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다. 책상 한편에 어머니 함을 모셔두고, 그 곁에 '어머니'라고 적힌 작은 메모지를 붙여두었습니다. 매일 마주하는 이 글자 하나가 왜 이토록 무겁고도 따뜻한지 모르겠습니다.\n\n생전 어머니께 \"사랑한다\"는 말 한마디 제대로 건네지 못했던 못난 자식은, 이제야 텅 빈 입력창 앞에서 \"어머니 사랑합니다\"라고 겨우 적어 내려갑니다. 그 뒤에 차마 다 잇지 못했던 말은 사실 \"죄송합니다\"였습니다. 더 자주 찾아뵙지 못한 것, 맛있는 음식을 함께 나누지 못한 것, 그리고 당신의 고단한 손을 한 번 더 잡아드리지 못한 모든 순간이 후회로 남았습니다.\n\n비록 지금은 제 마음을 전할 수 없지만, 이 간절한 마음 바람을 타고 어머니 계신 곳까지 닿기를 바랍니다. 어머니, 그곳에서는 부디 아픔 없이 평안하시기만을 기도합니다. 당신이 제게 주신 조건 없는 사랑을 기억하며, 저 또한 당신의 자랑스러운 자식으로 꿋꿋하게 살아가겠습니다. 사무치게 보고 싶습니다."
-                        : "Mother, your kind face smiling on the screen fills my heart with sorrow. I keep your urn on one side of my desk, with a small note that says 'Mother' next to it. I don't know why this single word I face every day feels so heavy yet warm.\n\nI was a child who couldn't even say \"I love you\" properly while you were alive, and only now am I managing to write it in this empty input box. The words I couldn't finish were actually \"I'm sorry.\" Not visiting more often, not sharing delicious food, and every moment I couldn't hold your tired hands again remains a regret.\n\nThough I cannot convey my heart now, I hope this earnest wish reaches you on the wind. Mother, I pray you are at peace without any pain. Remembering the unconditional love you gave me, I will live on steadfastly as your proud child. I miss you dearly.",
-                    location: lang === 'ko' ? '대한민국' : 'South Korea',
-                    date: '2026. 4. 8.',
-                    images: ['/mother_hero.png?v=1.7'],
-                    audio: null
-                });
             } else if (id.startsWith('demo-')) {
                 const saved = localStorage.getItem(`mock_post_${id}`);
                 if (saved) {
@@ -186,12 +176,11 @@ export default function PostDetailPage() {
                     {d.back}
                 </Link>
                 <div className="flex items-center gap-3">
-                    {id?.toString().startsWith('demo-') && (
-                        <Link href={`/${lang}/post/new?edit=${id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-100 text-amber-600 font-bold rounded-xl transition shadow-sm text-sm hover:bg-amber-100">
-                            <SquarePen className="w-4 h-4" />
-                            {lang === 'ko' ? '사연 수정하기' : 'Edit Story'}
-                        </Link>
-                    )}
+                    <Link href={`/${lang}/post/new?edit=${id}`} className="fixed bottom-24 right-6 z-50 flex items-center gap-2 px-6 py-4 bg-amber-500 text-white font-black rounded-full transition shadow-[0_10px_30px_rgba(245,158,11,0.4)] hover:scale-110 active:scale-95 animate-bounce">
+                        <SquarePen className="w-6 h-6" />
+                        <span className="text-lg">{lang === 'ko' ? '지금 바로 수정하기' : 'Edit Now'}</span>
+                    </Link>
+
                     <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">
                         <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
                         {lang === 'ko' ? '사연 남기기' : 'Post a Story'}
