@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import AdUnit from "@/components/AdUnit";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, MapPin, Calendar, Heart, ShieldCheck, Mail, Lock, Unlock, Share2, ChevronLeft, ChevronRight, Copy, Check, MessageCircleMore, Send } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Heart, ShieldCheck, Mail, Lock, Unlock, Share2, ChevronLeft, ChevronRight, Copy, Check, MessageCircleMore, Send, Edit, SquarePen } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import AudioPlayer from "@/components/AudioPlayer";
 import { createBrowserClient } from "@supabase/ssr";
@@ -185,10 +185,18 @@ export default function PostDetailPage() {
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     {d.back}
                 </Link>
-                <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">
-                    <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
-                    {lang === 'ko' ? '사연 남기기' : 'Post a Story'}
-                </Link>
+                <div className="flex items-center gap-3">
+                    {id?.toString().startsWith('demo-') && (
+                        <Link href={`/${lang}/post/new?edit=${id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-100 text-amber-600 font-bold rounded-xl transition shadow-sm text-sm hover:bg-amber-100">
+                            <SquarePen className="w-4 h-4" />
+                            {lang === 'ko' ? '사연 수정하기' : 'Edit Story'}
+                        </Link>
+                    )}
+                    <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">
+                        <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+                        {lang === 'ko' ? '사연 남기기' : 'Post a Story'}
+                    </Link>
+                </div>
             </div>
 
             {mockData && (

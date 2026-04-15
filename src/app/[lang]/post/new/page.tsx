@@ -1,8 +1,8 @@
 "use client";
 // Version: 1.7 - Recovery Edition
 
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { ArrowLeft, User, MapPin, AlignLeft, ShieldAlert, Heart, LogIn, Camera, Image as ImageIcon } from "lucide-react";
 import VoiceRecorder from "@/components/VoiceRecorder";
@@ -19,12 +19,32 @@ export default function NewPostPage() {
     const d = dict[lang as string] || dict['ko'];
     const router = useRouter();
 
+    const searchParams = useSearchParams();
+    const editId = searchParams.get('edit');
+    const isEditMode = !!editId;
+
     const [loading, setLoading] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [formData, setFormData] = useState({ name: "", location: "", story: "" });
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
     const [audioDataUrl, setAudioDataUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (editId) {
+            const saved = localStorage.getItem(`mock_post_${editId}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                setFormData({
+                    name: data.name || "",
+                    location: data.location || "",
+                    story: data.story || ""
+                });
+                setImagePreviews(data.images || []);
+                setAudioDataUrl(data.audio || null);
+            }
+        }
+    }, [editId]);
 
     const handleAudioComplete = (blob: Blob | null) => {
         setAudioBlob(blob);
@@ -92,12 +112,12 @@ export default function NewPostPage() {
         }
 
         if (isDemo || true) {
-            const mockId = 'demo-' + Date.now();
+            const mockId = isEditMode ? editId : ('demo-' + Date.now());
             localStorage.setItem(`mock_post_${mockId}`, JSON.stringify({
                 name: formData.name,
                 location: formData.location,
                 story: formData.story,
-                date: new Date().toLocaleDateString(),
+                date: isEditMode ? (JSON.parse(localStorage.getItem(`mock_post_${editId}`) || '{}').date || new Date().toLocaleDateString()) : new Date().toLocaleDateString(),
                 images: imagePreviews,
                 audio: audioDataUrl
             }));
@@ -105,7 +125,7 @@ export default function NewPostPage() {
             // 데모 모드: 실제 DB 인서트 대신 성공 처리 및 방금 만든 가상 포스트로 이동
             setTimeout(() => {
                 setLoading(false);
-                alert(`[System 알림]\n성공적으로 데이터베이스에 안전하게 저장되었습니다! \n(데모 모드: Supabase RLS 가상 통과 완료)`);
+                alert(isEditMode ? `[System 알림]\n사연이 성공적으로 수정되었습니다.` : `[System 알림]\n성공적으로 데이터베이스에 안전하게 저장되었습니다! \n(데모 모드: Supabase RLS 가상 통과 완료)`);
                 router.push(`/${lang}/post/${mockId}`);
             }, 800);
             return;
@@ -146,7 +166,9 @@ export default function NewPostPage() {
                 <div className="flex items-center gap-3 mb-8 pb-6 border-b border-gray-100 dark:border-slate-800">
                     <Heart className="w-8 h-8 text-primary fill-blue-50 dark:fill-indigo-900/30" />
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{d.title}</h1>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {isEditMode ? (lang === 'ko' ? '사연 수정하기' : 'Edit Story') : d.title}
+                        </h1>
                         <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">글로벌 Supabase RLS 매핑 데이터베이스 연결 활성화</p>
                     </div>
                 </div>
