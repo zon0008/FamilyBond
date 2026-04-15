@@ -162,7 +162,7 @@ export default function PostDetailPage() {
                 </Link>
             </div>
 
-            <article className="bg-white/95 dark:bg-slate-900 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-slate-800 transition-colors">
+            <article className="bg-white/95 dark:bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-slate-200 transition-colors">
                 <div className="relative w-full h-72 md:h-96 bg-gray-100 dark:bg-slate-800 border-b border-gray-100 dark:border-slate-800 group/carousel">
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -210,7 +210,7 @@ export default function PostDetailPage() {
                         {mockData ? `${mockData.story.substring(0, 30)}...` : '소중한 가족을 찾고 있습니다'}
                     </h1>
 
-                    <div className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-slate-200 bg-gray-50/80 dark:bg-slate-800/80 p-4 rounded-xl items-center border border-gray-100 dark:border-slate-700/50">
+                    <div className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-slate-700 bg-gray-50/80 dark:bg-slate-100/80 p-4 rounded-xl items-center border border-gray-100 dark:border-slate-200">
                         <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 p-1 rounded transition">
                             <strong className="text-gray-900 dark:text-white">{d.author}:</strong> <span className="text-gray-900 dark:text-white font-bold">{mockData ? mockData.name : '제보자'}</span>
                         </span>
@@ -239,7 +239,7 @@ export default function PostDetailPage() {
                     )}
                 </div>
 
-                <div className="p-8 prose prose-gray dark:prose-invert max-w-none text-foreground dark:text-slate-200 leading-relaxed text-lg pb-8">
+                <div className="p-8 prose prose-gray max-w-none text-foreground dark:text-slate-900 leading-relaxed text-lg pb-8">
                     {mockData?.audio && (
                         <div className="mb-8 not-prose">
                             <AudioPlayer src={mockData.audio} />

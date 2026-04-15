@@ -48,11 +48,11 @@ export default function BottomNav({ lang }: { lang: string }) {
                             <Link key={item.name} href={item.href} className="flex flex-col items-center justify-center py-2 relative group flex-1">
                                 <motion.div
                                     animate={isActive ? { y: -1, scale: 1.15 } : { y: 0, scale: 1 }}
-                                    className={`${isActive ? 'text-primary' : 'text-foreground/40'} transition-colors duration-300`}
+                                    className={`${isActive ? 'text-primary' : 'text-foreground/60'} transition-colors duration-300`}
                                 >
                                     {item.icon}
                                 </motion.div>
-                                <span className={`text-[9px] mt-1 font-black tracking-tight transition-colors duration-300 ${isActive ? 'text-primary' : 'text-foreground/40'}`}>
+                                <span className={`text-[9px] mt-1 font-black tracking-tight transition-colors duration-300 ${isActive ? 'text-primary' : 'text-foreground/60'}`}>
                                     {item.name}
                                 </span>
                                 {isActive && (

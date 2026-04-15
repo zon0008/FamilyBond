@@ -76,7 +76,7 @@ export default function UserSettingsPage() {
                         <label className="flex items-center justify-between cursor-pointer group">
                             <div className="flex flex-col text-left">
                                 <span className="font-bold text-gray-800 dark:text-slate-200">{isKorean ? "매칭 성공 알림" : "Match Success Alerts"}</span>
-                                <span className="text-xs text-gray-500 dark:text-slate-400 mt-1">{isKorean ? "누군가 내 사연에 매칭을 요청했을 때" : "When someone requests a match for your story"}</span>
+                                <span className="text-xs text-gray-500 dark:text-slate-300 mt-1">{isKorean ? "누군가 내 사연에 매칭을 요청했을 때" : "When someone requests a match for your story"}</span>
                             </div>
                             <input type="checkbox" className="w-5 h-5 text-primary rounded border-gray-300 dark:border-slate-600 focus:ring-primary" checked={matchAlerts} onChange={(e) => setMatchAlerts(e.target.checked)} />
                         </label>
@@ -84,7 +84,7 @@ export default function UserSettingsPage() {
                         <label className="flex items-center justify-between cursor-pointer group">
                             <div className="flex flex-col text-left">
                                 <span className="font-bold text-gray-800 dark:text-slate-200">{isKorean ? "새로운 소식" : "New Updates"}</span>
-                                <span className="text-xs text-gray-500 dark:text-slate-400 mt-1">{isKorean ? "FamilyBond의 공지사항 및 업데이트" : "Announcements and updates from FamilyBond"}</span>
+                                <span className="text-xs text-gray-500 dark:text-slate-300 mt-1">{isKorean ? "FamilyBond의 공지사항 및 업데이트" : "Announcements and updates from FamilyBond"}</span>
                             </div>
                             <input type="checkbox" className="w-5 h-5 text-primary rounded border-gray-300 dark:border-slate-600 focus:ring-primary" checked={newStoryAlerts} onChange={(e) => setNewStoryAlerts(e.target.checked)} />
                         </label>

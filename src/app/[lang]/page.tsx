@@ -41,7 +41,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
             />
 
             <p
-              className="text-foreground/60 max-w-2xl text-lg md:text-xl font-medium leading-relaxed mb-6"
+              className="text-foreground/60 dark:text-slate-300 max-w-2xl text-lg md:text-xl font-medium leading-relaxed mb-6"
               dangerouslySetInnerHTML={{ __html: dict.home.desc }}
             />
 

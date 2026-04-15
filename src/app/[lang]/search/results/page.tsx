@@ -16,21 +16,21 @@ export default async function SearchResultsPage(props: { searchParams: Promise<{
 
     return (
         <div className="w-full max-w-4xl mx-auto px-4 py-8 flex flex-col gap-6">
-            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm mb-4">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-100 dark:border-slate-800 shadow-sm mb-4">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                     <Search className="w-6 h-6 text-primary" />
                     검색 결과
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-slate-300">
                     <span className="font-bold text-accent">"{query}"</span>에 대한 정밀 분석 결과 모음입니다.
                 </p>
             </div>
 
             <div className="flex flex-col gap-4">
                 {results.map(res => (
-                    <Link key={res.id} href={`/post/${res.id}`} className="block bg-white p-6 rounded-xl border border-gray-200 hover:border-primary transition-colors group">
-                        <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary mb-3">{res.title}</h2>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                    <Link key={res.id} href={`/post/${res.id}`} className="block bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-primary transition-colors group">
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary mb-3">{res.title}</h2>
+                        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-slate-400">
                             <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {res.location}</span>
                             <span>작성자: {res.name}</span>
                             <span>{res.date}</span>

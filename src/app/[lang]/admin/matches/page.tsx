@@ -31,7 +31,7 @@ export default function AdminMatchesQueue() {
             <div className="flex items-center justify-between mb-4">
                 <div>
                     <h2 className="text-3xl font-extrabold dark:text-white mb-2">슈퍼 매칭 대기열 (Contact Approval)</h2>
-                    <p className="text-gray-500 dark:text-gray-400 font-medium">관리자가 양 당사자의 진정성을 교차 검증하고 민감 연락처를 해제(Unmasking)하는 최상위 관문입니다.</p>
+                    <p className="text-gray-500 dark:text-gray-300 font-medium">관리자가 양 당사자의 진정성을 교차 검증하고 민감 연락처를 해제(Unmasking)하는 최상위 관문입니다.</p>
                 </div>
                 <span className="bg-indigo-100 text-indigo-700 font-bold px-4 py-1.5 rounded-full text-sm shrink-0">
                     {matches.length} 건 검토 필요
@@ -54,7 +54,7 @@ export default function AdminMatchesQueue() {
                                     <UserCircle2 className="w-4 h-4" /> [원본 사연] 작성자의 정보
                                 </div>
                                 <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{match.postTarget}</h4>
-                                <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-inner min-h-[100px]">
+                                <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-inner min-h-[100px]">
                                     "{match.postStory}"
                                 </p>
                             </div>

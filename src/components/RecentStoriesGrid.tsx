@@ -170,18 +170,18 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                                         </span>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] font-black text-foreground/50 dark:text-slate-400 uppercase tracking-widest leading-none mb-1">{dict.post?.author || '찾는 이'}</span>
-                                        <span className="text-sm font-black text-foreground dark:text-slate-200">{story.name}</span>
+                                        <span className="text-[10px] font-black text-foreground/50 dark:text-slate-300 uppercase tracking-widest leading-none mb-1">{dict.post?.author || '찾는 이'}</span>
+                                        <span className="text-sm font-black text-foreground dark:text-white">{story.name}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="flex items-center justify-between pt-6 border-t border-border/50">
-                                <div className="flex items-center gap-2 text-foreground/60 dark:text-slate-400">
+                                <div className="flex items-center gap-2 text-foreground/60 dark:text-slate-300">
                                     <Calendar className="w-3.5 h-3.5" />
                                     <span className="text-[11px] font-bold">{story.date}</span>
                                 </div>
-                                <div className="flex items-center gap-2 text-foreground/60 dark:text-slate-400">
+                                <div className="flex items-center gap-2 text-foreground/60 dark:text-slate-300">
                                     <MapPin className="w-3.5 h-3.5" />
                                     <span className="text-[11px] font-bold">{story.location.split(' ')[0]}</span>
                                 </div>
