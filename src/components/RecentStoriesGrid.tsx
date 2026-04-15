@@ -26,10 +26,21 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
     const [copiedId, setCopiedId] = useState<string | null>(null);
 
     useEffect(() => {
-        // Clear any legacy mock data that might conflict with core stories
-        localStorage.removeItem('mock_post_mother-hero');
-        localStorage.removeItem('mock_post_1');
-        localStorage.removeItem('mock_post_2');
+        // PERMANENT BUST: Clear any legacy or testing mock data including the 'Black Jindo' test
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (
+                key.includes('jindo') ||
+                key.includes('dog') ||
+                key === 'mock_post_mother-hero' ||
+                key === 'mock_post_1' ||
+                key === 'mock_post_2'
+            )) {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
 
         const mockStories = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -37,6 +48,14 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
             if (key && key.startsWith('mock_post_demo-')) {
                 try {
                     const data = JSON.parse(localStorage.getItem(key) || '{}');
+
+                    // Filter out any story that might contain 'jindo' or 'dog' in its content or images
+                    const content = (data.story || '').toLowerCase();
+                    const title = (data.title || '').toLowerCase();
+                    const hasTestKeyword = content.includes('jindo') || content.includes('dog') || title.includes('jindo') || title.includes('dog');
+
+                    if (hasTestKeyword) continue;
+
                     const id = key.replace('mock_post_', '');
                     mockStories.push({
                         id,
@@ -45,7 +64,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                         location: data.location,
                         date: data.date,
                         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || 'https://picsum.photos/400/200')) + '?v=1.5'
+                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.6'
                     });
                 } catch (e) {
                     console.error("Failed to parse mock post", e);
@@ -55,8 +74,8 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
         mockStories.sort((a, b) => b.id.localeCompare(a.id));
 
         // Ensure mother-hero (initialStories[0]) is ALWAYS at index 0 and highlighted
-        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.5' }));
-        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.5' };
+        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.6' }));
+        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.6' };
 
         setStories([motherStory, ...mockStories, ...otherInitial]);
     }, [initialStories]);

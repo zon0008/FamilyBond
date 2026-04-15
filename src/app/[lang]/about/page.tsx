@@ -210,9 +210,7 @@ export default function AboutPage() {
                     </div>
                     {/* UPGRADE_REQUIRED: 실제 데이터 연동 시 stories prop을 전달하세요 */}
                     <RecentStoriesGrid initialStories={[
-                        { id: '1', name: lang === 'ko' ? '최주영' : 'J. Choi', title: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보며' : 'Mother, looking at your kind face smiling on the screen', date: '2026. 4. 8.', location: lang === 'ko' ? '대한민국' : 'South Korea', image: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=800&auto=format&fit=crop' },
-                        { id: '2', name: lang === 'ko' ? '김영희' : 'Y. Kim', title: lang === 'ko' ? '1995년 서울역에서 헤어진 동생을 찾습니다' : 'Looking for my brother lost at Seoul Station in 1995', date: '2026.04.05', location: lang === 'ko' ? '서울특별시' : 'Seoul', image: 'https://images.unsplash.com/photo-1542128962-9d50ad7bf714?q=80&w=800&auto=format&fit=crop' },
-                        { id: '3', name: lang === 'ko' ? '박지은' : 'J. Park', title: lang === 'ko' ? '가슴에 점이 있는 오빠(박철수)를 찾아요' : 'Looking for my brother (Chul-su Park) with a mole on his chest', date: '2026.04.04', location: lang === 'ko' ? '부산광역시' : 'Busan', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop' }
+                        { id: 'mother-hero', name: lang === 'ko' ? '최주영' : 'J. Choi', title: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다' : 'Mother, looking at your kind face smiling on the screen', date: '2026. 4. 8.', location: lang === 'ko' ? '대한민국' : 'South Korea', image: '/mother_hero.png?v=1.6' },
                     ]} lang={lang as string} dict={{}} />
                 </div>
             </section>

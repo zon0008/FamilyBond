@@ -56,23 +56,21 @@ export default function AuthHeader({ lang, homeLabel, loginLabel }: { lang: stri
                     }
 
                     if (K.isInitialized()) {
+                        const finalLink = {
+                            mobileWebUrl: 'https://family-bond-final.vercel.app/' + lang,
+                            webUrl: 'https://family-bond-final.vercel.app/' + lang
+                        };
                         K.Share.sendDefault({
                             objectType: 'feed',
                             content: {
                                 title: shareTitle,
                                 description: shareDesc,
-                                imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.5',
-                                link: {
-                                    mobileWebUrl: 'https://family-bond-final.vercel.app/' + lang,
-                                    webUrl: 'https://family-bond-final.vercel.app/' + lang
-                                },
+                                imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.6',
+                                link: finalLink,
                             },
                             buttons: [{
                                 title: '서비스 보기',
-                                link: {
-                                    mobileWebUrl: 'https://family-bond-final.vercel.app/' + lang,
-                                    webUrl: 'https://family-bond-final.vercel.app/' + lang
-                                }
+                                link: finalLink
                             }]
                         });
                         return;

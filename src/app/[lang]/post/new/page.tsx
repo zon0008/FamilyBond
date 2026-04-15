@@ -193,16 +193,28 @@ export default function NewPostPage() {
                             ))}
 
                             {imagePreviews.length < 10 && (
-                                <div className="relative aspect-square border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-800/50 flex items-center justify-center overflow-hidden hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer group">
-                                    <input type="file" multiple accept="image/*" capture="environment" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
-                                    <div className="text-center flex flex-col items-center p-2">
-                                        <ImageIcon className="w-6 h-6 text-gray-400 dark:text-slate-600 group-hover:scale-110 transition-transform mb-1" />
-                                        <span className="text-[10px] md:text-sm font-medium text-gray-500 dark:text-slate-400">사진 추가</span>
+                                <>
+                                    {/* Direct Camera Button */}
+                                    <div className="relative aspect-square border-2 border-dashed border-primary/30 dark:border-primary/50 rounded-xl bg-primary/5 dark:bg-primary/10 flex items-center justify-center overflow-hidden hover:bg-primary/10 transition cursor-pointer group">
+                                        <input type="file" accept="image/*" capture="environment" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                        <div className="text-center flex flex-col items-center p-2">
+                                            <Camera className="w-6 h-6 text-primary group-hover:scale-110 transition-transform mb-1" />
+                                            <span className="text-[10px] md:text-xs font-bold text-primary">직접 촬영</span>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    {/* Gallery Select Button */}
+                                    <div className="relative aspect-square border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-800/50 flex items-center justify-center overflow-hidden hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer group">
+                                        <input type="file" multiple accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                        <div className="text-center flex flex-col items-center p-2">
+                                            <ImageIcon className="w-6 h-6 text-gray-400 dark:text-slate-600 group-hover:scale-110 transition-transform mb-1" />
+                                            <span className="text-[10px] md:text-xs font-medium text-gray-500 dark:text-slate-400">갤러리 선택</span>
+                                        </div>
+                                    </div>
+                                </>
                             )}
                         </div>
-                        <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1 italic">* 추억이 담긴 사진을 여러 장 올리면 찾을 확률이 높아집니다.</p>
+                        <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1 italic">* '직접 촬영'하거나 '갤러리'에서 업로드할 사진을 선택해 주세요 (최대 10장).</p>
                     </div>
 
                     <div className="flex flex-col gap-2">

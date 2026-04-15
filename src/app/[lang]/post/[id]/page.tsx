@@ -89,15 +89,17 @@ export default function PostDetailPage() {
                     if (!K.isInitialized()) K.init(appKey);
 
                     const finalUrl = `https://family-bond-final.vercel.app/${lang}/post/${id}`;
+                    const finalLink = { mobileWebUrl: finalUrl, webUrl: finalUrl };
+
                     K.Share.sendDefault({
                         objectType: 'feed',
                         content: {
                             title: 'FamilyBond - 소중한 인연',
                             description: text.substring(0, 100),
-                            imageUrl: mockData?.images?.[0] || 'https://family-bond-final.vercel.app/mother_hero.png?v=1.5',
-                            link: { mobileWebUrl: finalUrl, webUrl: finalUrl },
+                            imageUrl: 'https://family-bond-final.vercel.app/mother_hero.png?v=1.6',
+                            link: finalLink,
                         },
-                        buttons: [{ title: '사연 보기', link: { mobileWebUrl: finalUrl, webUrl: finalUrl } }]
+                        buttons: [{ title: '사연 보기', link: finalLink }]
                     });
                 } catch (e) {
                     console.error("Kakao share error in detail page:", e);
