@@ -57,11 +57,11 @@ export default function PostDetailPage() {
                     setMockData(JSON.parse(saved));
                 } else {
                     setMockData({
-                        name: lang === 'ko' ? '최주영' : 'J. Choi',
+                        name: lang === 'ko' ? '최주영 (v2.4)' : 'J. Choi (v2.4)',
                         location: lang === 'ko' ? '대한민국' : 'South Korea',
-                        story: lang === 'ko' ? '어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다. 책상 한편에 어머니 함을 모셔두고, 그 곁에 \'어머니\'라고 정히 적은 메모지를 붙여두었습니다. 매일 마주하는 그 글자가 오늘따라 유난히 눈물겹습니다.\n\n어머니, 당신께서 살아계셨다면 이 화면 속 모습처럼 그렇게 웃고 계셨겠지요. 모질었던 세월 다 잊으시고, 이제는 그저 평안하게... 보고 싶습니다, 어머니.' : 'Mother, looking at your kind face smiling on the screen makes my heart ache. I have placed your urn on one side of the desk and attached a note with \'Mother\' neatly written on it. That word I face every day feels particularly tearful today.\n\nMother, if you were still alive, you would have been smiling just like in this screen. Forgetting all the harsh years, now just in peace... I miss you, Mother.',
-                        date: '2026. 4. 8.',
-                        images: ['/mother_hero.png?v=2.0'],
+                        story: lang === 'ko' ? '어머니 (v2.4), 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다. 책상 한편에 어머니 함을 모셔두고, 그 곁에 \'어머니\'라고 정히 적은 메모지를 붙여두었습니다. 매일 마주하는 그 글자가 오늘따라 유난히 눈물겹습니다.\n\n어머니, 당신께서 살아계셨다면 이 화면 속 모습처럼 그렇게 웃고 계셨겠지요. 모질었던 세월 다 잊으시고, 이제는 그저 평안하게... 보고 싶습니다, 어머니.' : 'Mother (v2.4), looking at your kind face smiling on the screen makes my heart ache. I have placed your urn on one side of the desk and attached a note with \'Mother\' neatly written on it. That word I face every day feels particularly tearful today.\n\nMother, if you were still alive, you would have been smiling just like in this screen. Forgetting all the harsh years, now just in peace... I miss you, Mother.',
+                        date: '2026. 4. 15.',
+                        images: ['/mother_hero.png?v=2.4'],
                         audio: null
                     });
                 }
