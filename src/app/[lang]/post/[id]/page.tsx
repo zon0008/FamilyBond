@@ -176,9 +176,9 @@ export default function PostDetailPage() {
                     {d.back}
                 </Link>
                 <div className="flex items-center gap-3">
-                    <Link href={`/${lang}/post/new?edit=${id}`} className="fixed bottom-24 right-6 z-50 flex items-center gap-2 px-6 py-4 bg-amber-500 text-white font-black rounded-full transition shadow-[0_10px_30px_rgba(245,158,11,0.4)] hover:scale-110 active:scale-95 animate-bounce">
-                        <SquarePen className="w-6 h-6" />
-                        <span className="text-lg">{lang === 'ko' ? '지금 바로 수정하기' : 'Edit Now'}</span>
+                    <Link href={`/${lang}/post/new?edit=${id}`} className="fixed bottom-32 right-6 z-[9999] flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black rounded-full transition shadow-[0_15px_40px_rgba(245,158,11,0.6)] hover:scale-110 active:scale-95 animate-bounce border-2 border-white/20">
+                        <SquarePen className="w-8 h-8" />
+                        <span className="text-xl">{lang === 'ko' ? '사연 수정하기 (지금 바로!)' : 'Edit Story (Now!)'}</span>
                     </Link>
 
                     <Link href={`/${lang}/post/new`} className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-50 border border-indigo-100 text-indigo-600 font-extrabold rounded-xl transition shadow-sm text-sm group">

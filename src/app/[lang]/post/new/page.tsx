@@ -14,7 +14,17 @@ const dict: Record<string, any> = {
     es: { title: "Registrar Familia Perdida", nameLabel: "Nombre destino", locLabel: "País y Ubicación", photoLabel: "Foto Memorable (Opcional)", descLabel: "Historia detallada", submit: "Publicar Globalmente", back: "Volver", authCta: "Inicia sesión de forma segura\npara encontrar a tu familia.", authDesc: "Solo usuarios verificados pueden publicar. Toma un segundo." }
 };
 
+import { Suspense } from 'react';
+
 export default function NewPostPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center p-8 text-primary font-bold">Loading Editor...</div>}>
+            <NewPostContent />
+        </Suspense>
+    );
+}
+
+function NewPostContent() {
     const { lang } = useParams();
     const d = dict[lang as string] || dict['ko'];
     const router = useRouter();
