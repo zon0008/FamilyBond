@@ -48,10 +48,23 @@ export default function PostDetailPage() {
     const [matchStatus, setMatchStatus] = useState<'idle' | 'pending' | 'approved'>('idle');
 
     useEffect(() => {
-        if (typeof id === 'string' && id.startsWith('demo-')) {
-            const saved = localStorage.getItem(`mock_post_${id}`);
-            if (saved) {
-                setMockData(JSON.parse(saved));
+        if (typeof id === 'string') {
+            if (id === 'mother-hero') {
+                setMockData({
+                    name: lang === 'ko' ? '최주영' : 'J. Choi',
+                    story: lang === 'ko'
+                        ? "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보며 눈시울이 붉어집니다.\n1982년 겨울, 부산 자갈치 시장에서 놓친 그 손을 아직도 기억합니다.\n당시 어머니는 붉은색 스웨터를 입고 계셨고, 제 이름 '주영아'를 애타게 부르던 목소리가 귓가에 선합니다.\n어머니, 이제는 제가 어머니를 찾습니다. 부디 건강하게 살아만 계셔주세요."
+                        : "Mother, looking at your kind face smiling on the screen, my eyes well up with tears.\nI still remember that hand I lost at Busan Jagalchi Market in the winter of 1982.\nAt that time, you were wearing a red sweater, and your voice calling my name 'Joo-young' still rings in my ears.\nMother, now I am looking for you. Please just stay healthy and alive.",
+                    location: lang === 'ko' ? '대한민국' : 'South Korea',
+                    date: '2026. 4. 8.',
+                    images: ['/mother_hero.png'],
+                    audio: null
+                });
+            } else if (id.startsWith('demo-')) {
+                const saved = localStorage.getItem(`mock_post_${id}`);
+                if (saved) {
+                    setMockData(JSON.parse(saved));
+                }
             }
         }
 
@@ -162,8 +175,8 @@ export default function PostDetailPage() {
                 </Link>
             </div>
 
-            <article className="bg-white/95 dark:bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-slate-200 transition-colors">
-                <div className="relative w-full h-72 md:h-96 bg-gray-100 dark:bg-slate-800 border-b border-gray-100 dark:border-slate-800 group/carousel">
+            <article className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-colors">
+                <div className="relative w-full h-72 md:h-96 bg-gray-100 border-b border-gray-100 group/carousel">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentImgIdx}
@@ -198,26 +211,26 @@ export default function PostDetailPage() {
                     )}
                 </div>
 
-                <div className="p-8 pb-6 border-b border-gray-100 dark:border-slate-800">
+                <div className="p-8 pb-6 border-b border-gray-100">
                     <div className="flex items-center gap-3 mb-5">
-                        <span className="px-3 py-1 bg-blue-50 dark:bg-indigo-900/30 text-primary dark:text-cyan-400 text-xs font-bold rounded-full border border-blue-100 dark:border-indigo-800">#{id}</span>
-                        <div className="flex items-center gap-1.5 px-3 py-1 bg-green-50 dark:bg-emerald-900/20 text-green-700 dark:text-emerald-400 text-xs font-bold rounded-full border border-green-100 dark:border-emerald-800/30" title={d.trustScore}>
+                        <span className="px-3 py-1 bg-blue-50 text-primary text-xs font-bold rounded-full border border-blue-100">#{id}</span>
+                        <div className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100" title={d.trustScore}>
                             <ShieldCheck className="w-3.5 h-3.5" /> {d.trustScore}: 98%
                         </div>
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight mb-6">
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-6">
                         {mockData ? `${mockData.story.substring(0, 30)}...` : '소중한 가족을 찾고 있습니다'}
                     </h1>
 
-                    <div className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-slate-700 bg-gray-50/80 dark:bg-slate-100/80 p-4 rounded-xl items-center border border-gray-100 dark:border-slate-200">
-                        <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700 p-1 rounded transition">
-                            <strong className="text-gray-900 dark:text-white">{d.author}:</strong> <span className="text-gray-900 dark:text-white font-bold">{mockData ? mockData.name : '제보자'}</span>
+                    <div className="flex flex-wrap gap-5 text-sm text-slate-600 bg-gray-50/80 p-4 rounded-xl items-center border border-gray-100">
+                        <span onClick={simulateAdminApproval} className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 p-1 rounded transition">
+                            <strong className="text-slate-900">{d.author}:</strong> <span className="text-slate-900 font-bold">{mockData ? mockData.name : '제보자'}</span>
                         </span>
-                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><MapPin className="w-4 h-4" /> {mockData ? mockData.location : '지역 정보 없음'}</span>
-                        <span className="flex items-center gap-1.5 text-gray-500 dark:text-slate-500"><Calendar className="w-4 h-4" /> {mockData ? mockData.date : '일자 정보 없음'}</span>
+                        <span className="flex items-center gap-1.5 text-slate-500"><MapPin className="w-4 h-4" /> {mockData ? mockData.location : '지역 정보 없음'}</span>
+                        <span className="flex items-center gap-1.5 text-slate-500"><Calendar className="w-4 h-4" /> {mockData ? mockData.date : '일자 정보 없음'}</span>
 
-                        <button onClick={handleShare} className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm rounded-lg hover:border-primary transition font-bold text-gray-700 dark:text-slate-200">
+                        <button onClick={handleShare} className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 shadow-sm rounded-lg hover:border-primary transition font-bold text-slate-700">
                             <Share2 className="w-4 h-4" /> 공유하기
                         </button>
                     </div>
@@ -228,7 +241,7 @@ export default function PostDetailPage() {
                                 <span className={`text-xs font-bold uppercase tracking-wider mb-1 ${matchStatus === 'approved' ? 'text-green-600' : 'text-orange-600'}`}>
                                     {matchStatus === 'approved' ? 'Match Approved' : 'Pending Verification'}
                                 </span>
-                                <h3 className={`text-2xl font-black font-mono tracking-widest ${matchStatus === 'approved' ? 'text-gray-900' : 'text-gray-400 blur-[2px]'}`}>
+                                <h3 className={`text-2xl font-black font-mono tracking-widest ${matchStatus === 'approved' ? 'text-slate-900' : 'text-slate-400 blur-[2px]'}`}>
                                     {matchStatus === 'approved' ? '010-8291-3844' : '010-****-****'}
                                 </h3>
                             </div>
@@ -239,7 +252,7 @@ export default function PostDetailPage() {
                     )}
                 </div>
 
-                <div className="p-8 prose prose-gray max-w-none text-foreground dark:text-slate-900 leading-relaxed text-lg pb-8">
+                <div className="p-8 prose prose-gray max-w-none text-slate-900 leading-relaxed text-lg pb-8">
                     {mockData?.audio && (
                         <div className="mb-8 not-prose">
                             <AudioPlayer src={mockData.audio} />

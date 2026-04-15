@@ -36,7 +36,8 @@ export default function AuthHeader({ lang, homeLabel, loginLabel }: { lang: stri
 
     const handleShare = () => {
         if (typeof window !== 'undefined') {
-            const shareUrl = window.location.origin + `/${lang}`;
+            const siteUrl = 'https://family-bond-final.vercel.app';
+            const shareUrl = siteUrl + `/${lang}`;
             const shareTitle = lang === 'ko' ? 'FamilyBond - 가족의 소중한 인연' : 'FamilyBond - Precious Family Ties';
             const shareDesc = lang === 'ko'
                 ? "헤어진 가족의 기적 같은 재회를 응원하는 'FamilyBond' 서비스를 소개합니다."
@@ -44,28 +45,39 @@ export default function AuthHeader({ lang, homeLabel, loginLabel }: { lang: stri
 
             // @ts-ignore
             const K = window.Kakao;
-            if (K) {
-                if (!K.isInitialized()) {
-                    K.init(process.env.NEXT_PUBLIC_KAKAO_APP_KEY);
-                }
+            const appKey = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
 
-                if (K.isInitialized()) {
-                    K.Share.sendDefault({
-                        objectType: 'feed',
-                        content: {
-                            title: shareTitle,
-                            description: shareDesc,
-                            imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300',
-                            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
-                        },
-                        buttons: [{ title: '서비스 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
-                    });
-                    return;
+            if (K && appKey) {
+                try {
+                    if (!K.isInitialized()) {
+                        K.init(appKey);
+                    }
+
+                    if (K.isInitialized()) {
+                        K.Share.sendDefault({
+                            objectType: 'feed',
+                            content: {
+                                title: shareTitle,
+                                description: shareDesc,
+                                imageUrl: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop',
+                                link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+                            },
+                            buttons: [{ title: '서비스 보기', link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }]
+                        });
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Kakao share error:", e);
                 }
             }
 
-            // Fallback (SDK 로드 실패 시)
-            router.push(`/${lang}/about`);
+            // Fallback (SDK 로드 실패 또는 설정 미비 시)
+            if (navigator.share) {
+                navigator.share({ title: shareTitle, text: shareDesc, url: shareUrl }).catch(() => { });
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert(lang === 'ko' ? '링크가 복사되었습니다. 친구에게 공유해 보세요!' : 'Link copied to clipboard!');
+            }
         }
     };
 

@@ -37,7 +37,7 @@ export default function LoginPage() {
         }
 
         // Resolve the site URL clearly for stable OAuth redirects
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://family-bond-final.vercel.app';
+        const siteUrl = 'https://family-bond-final.vercel.app';
         const redirectUrl = `${siteUrl}/auth/callback?next=${nextUrl}`;
 
         const { error } = await supabase.auth.signInWithOAuth({
@@ -45,8 +45,7 @@ export default function LoginPage() {
             options: {
                 redirectTo: redirectUrl,
                 queryParams: provider === 'kakao' ? {
-                    prompt: 'select_account', // Always prompt for account select for stability
-                    access_type: 'offline'
+                    prompt: 'select_account'
                 } : {},
                 scopes: provider === 'kakao' ? 'account_email profile_nickname profile_image' : undefined
             }
@@ -55,10 +54,11 @@ export default function LoginPage() {
         if (error) {
             console.error("Login error:", error);
             setIsLoading(false);
-            // OAuth 실패 시 데모 로그인으로 유도하거나 자동 전환 (사용자 경험 개선)
-            if (confirm("OAuth 인증 설정이 완료되지 않았습니다. 데모 계정으로 로그인하시겠습니까?")) {
-                handleDemoLogin();
-            }
+            // OAuth 실패 시 데모 로그인으로 유도 (KOE006 등 설정 오류 대비)
+            alert(lang === 'ko'
+                ? "카카오 인증 설정(Redirect URI)을 확인 중인 것 같습니다. 원활한 테스트를 위해 데모 로그인을 대신 실행합니다."
+                : "Kakao Auth configuration is being verified. Switching to Demo Login for seamless preview.");
+            handleDemoLogin();
         }
     };
 

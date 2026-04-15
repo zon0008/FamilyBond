@@ -98,7 +98,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
             animate="show"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-            {stories.map(story => (
+            {stories.map((story, index) => (
                 <motion.div key={story.id} variants={item} className="group/card relative" onMouseEnter={() => setActiveShare(story.id)} onMouseLeave={() => setActiveShare(null)}>
                     <AnimatePresence>
                         {activeShare === story.id && (
@@ -142,7 +142,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
 
                     <Link
                         href={`/${lang}/post/${story.id}`}
-                        className="group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full"
+                        className={`group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full ${index === 0 ? 'border-4 border-[#22c55e] shadow-[0_0_20px_rgba(34,197,94,0.3)] ring-4 ring-[#22c55e]/10' : ''}`}
                     >
                         <div className="relative w-full h-56 overflow-hidden">
                             <Image src={story.image || "https://picsum.photos/400/200"} alt="Story image" fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />

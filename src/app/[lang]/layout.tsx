@@ -40,11 +40,16 @@ export default async function RootLayout(props: {
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js" defer></script>
         <script dangerouslySetInnerHTML={{
           __html: `
-            window.onload = function() {
-              if (window.Kakao && !window.Kakao.isInitialized()) {
-                window.Kakao.init('${process.env.NEXT_PUBLIC_KAKAO_APP_KEY}');
+            (function() {
+              function initKakao() {
+                if (window.Kakao && !window.Kakao.isInitialized()) {
+                  const key = '${process.env.NEXT_PUBLIC_KAKAO_APP_KEY || ""}';
+                  if (key) window.Kakao.init(key);
+                }
               }
-            };
+              if (document.readyState === 'complete') initKakao();
+              else window.addEventListener('load', initKakao);
+            })();
           `
         }} />
       </head>
