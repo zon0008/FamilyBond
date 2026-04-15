@@ -5,7 +5,7 @@ import AdUnit from "@/components/AdUnit";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, MapPin, Calendar, Heart, ShieldCheck, Mail, Lock, Unlock, Share2, ChevronLeft, ChevronRight, Copy, Check, MessageCircleMore, Send, Edit, SquarePen } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import AudioPlayer from "@/components/AudioPlayer";
 import { createBrowserClient } from "@supabase/ssr";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,9 +33,6 @@ const clientDict: Record<string, any> = {
 
 export default function PostDetailPage() {
     const { lang, id } = useParams();
-    const searchParams = useSearchParams();
-    const editId = searchParams.get('edit') || searchParams.get('id') || (typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('edit') || new URLSearchParams(window.location.search).get('id')) : null);
-    const isEditMode = !!editId;
     const router = useRouter();
     const d = clientDict[lang as string] || clientDict['ko'];
     const supabase = createBrowserClient(
@@ -55,7 +52,8 @@ export default function PostDetailPage() {
         if (typeof id === 'string') {
             if (id === 'mother-hero') {
                 const saved = localStorage.getItem(`mock_post_mother-hero`);
-                if (saved) {
+                // 필터: '자갈치'가 포함된 잘못된 저장 데이터는 무시하고 원본으로 덮어씀
+                if (saved && !saved.includes('자갈치')) {
                     setMockData(JSON.parse(saved));
                 } else {
                     setMockData({

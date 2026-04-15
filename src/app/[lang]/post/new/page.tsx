@@ -30,7 +30,7 @@ function NewPostContent() {
     const router = useRouter();
 
     const searchParams = useSearchParams();
-    const editId = searchParams.get('edit') || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null);
+    const editId = searchParams.get('edit') || searchParams.get('id') || (typeof window !== 'undefined' ? (new URLSearchParams(window.location.search).get('edit') || new URLSearchParams(window.location.search).get('id')) : null);
     const isEditMode = !!editId;
 
     const [loading, setLoading] = useState(false);
