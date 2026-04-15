@@ -58,6 +58,8 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                     if (hasTestKeyword) continue;
 
                     const id = key.replace('mock_post_', '');
+                    const isMotherStory = data.name === '최주영' || data.name === 'J. Choi';
+
                     mockStories.push({
                         id,
                         title: data.story?.split('\n')[0].substring(0, 30) || '제목 없음',
@@ -65,7 +67,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                         location: data.location,
                         date: data.date,
                         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.7'
+                        image: isMotherStory ? '/mother_hero.png?v=1.7' : ((data.images && data.images.length > 0 ? data.images[0] : (data.image || '/mother_hero.png')) + '?v=1.7')
                     });
                 } catch (e) {
                     console.error("Failed to parse mock post", e);
@@ -170,7 +172,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
 
                     <Link
                         href={`/${lang}/post/${story.id}`}
-                        className={`group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full ${index === 0 ? 'border-4 border-[#22c55e] shadow-[0_0_20px_rgba(34,197,94,0.3)] ring-4 ring-[#22c55e]/10' : ''}`}
+                        className={`group flex flex-col bg-card rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-border hover:border-primary/50 h-full ${index === 0 ? 'border-[6px] border-[#22c55e] shadow-[0_0_30px_rgba(34,197,94,0.4)] ring-8 ring-[#22c55e]/10 z-10' : ''}`}
                     >
                         <div className="relative w-full h-56 overflow-hidden">
                             <Image src={story.image || "https://picsum.photos/400/200"} alt="Story image" fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />

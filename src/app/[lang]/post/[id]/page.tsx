@@ -64,7 +64,12 @@ export default function PostDetailPage() {
             } else if (id.startsWith('demo-')) {
                 const saved = localStorage.getItem(`mock_post_${id}`);
                 if (saved) {
-                    setMockData(JSON.parse(saved));
+                    const data = JSON.parse(saved);
+                    // Force original photo for the main character 'Choi Ju-young'
+                    if (data.name === '최주영' || data.name === 'J. Choi') {
+                        data.images = ['/mother_hero.png?v=1.7'];
+                    }
+                    setMockData(data);
                 }
             }
         }
