@@ -45,7 +45,7 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
                         location: data.location,
                         date: data.date,
                         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || 'https://picsum.photos/400/200')) + '?v=1.1'
+                        image: (data.images && data.images.length > 0 ? data.images[0] : (data.image || 'https://picsum.photos/400/200')) + '?v=1.5'
                     });
                 } catch (e) {
                     console.error("Failed to parse mock post", e);
@@ -55,8 +55,8 @@ export default function RecentStoriesGrid({ initialStories, lang, dict }: { init
         mockStories.sort((a, b) => b.id.localeCompare(a.id));
 
         // Ensure mother-hero (initialStories[0]) is ALWAYS at index 0 and highlighted
-        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.1' }));
-        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.1' };
+        const otherInitial = initialStories.slice(1).map(s => ({ ...s, image: s.image + '?v=1.5' }));
+        const motherStory = { ...initialStories[0], image: initialStories[0].image + '?v=1.5' };
 
         setStories([motherStory, ...mockStories, ...otherInitial]);
     }, [initialStories]);

@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic';
 import React, { useState, useEffect } from "react";
 import AdUnit from "@/components/AdUnit";
 import Link from "next/link";
@@ -53,11 +54,11 @@ export default function PostDetailPage() {
                 setMockData({
                     name: lang === 'ko' ? '최주영' : 'J. Choi',
                     story: lang === 'ko'
-                        ? "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보며 눈시울이 붉어집니다.\n1982년 겨울, 부산 자갈치 시장에서 놓친 그 손을 아직도 기억합니다.\n당시 어머니는 붉은색 스웨터를 입고 계셨고, 제 이름 '주영아'를 애타게 부르던 목소리가 귓가에 선합니다.\n어머니, 이제는 제가 어머니를 찾습니다. 부디 건강하게 살아만 계셔주세요."
-                        : "Mother, looking at your kind face smiling on the screen, my eyes well up with tears.\nI still remember that hand I lost at Busan Jagalchi Market in the winter of 1982.\nAt that time, you were wearing a red sweater, and your voice calling my name 'Joo-young' still rings in my ears.\nMother, now I am looking for you. Please just stay healthy and alive.",
+                        ? "어머니, 화면 속 인자하게 웃고 계신 당신의 얼굴을 보니 가슴 한구석이 아려옵니다. 책상 한편에 어머니 함을 모셔두고, 그 곁에 '어머니'라고 적힌 작은 메모지를 붙여두었습니다. 매일 마주하는 이 글자 하나가 왜 이토록 무겁고도 따뜻한지 모르겠습니다.\n\n생전 어머니께 \"사랑한다\"는 말 한마디 제대로 건네지 못했던 못난 자식은, 이제야 텅 빈 입력창 앞에서 \"어머니 사랑합니다\"라고 겨우 적어 내려갑니다. 그 뒤에 차마 다 잇지 못했던 말은 사실 \"죄송합니다\"였습니다. 더 자주 찾아뵙지 못한 것, 맛있는 음식을 함께 나누지 못한 것, 그리고 당신의 고단한 손을 한 번 더 잡아드리지 못한 모든 순간이 후회로 남았습니다.\n\n비록 지금은 제 마음을 전할 수 없지만, 이 간절한 마음 바람을 타고 어머니 계신 곳까지 닿기를 바랍니다. 어머니, 그곳에서는 부디 아픔 없이 평안하시기만을 기도합니다. 당신이 제게 주신 조건 없는 사랑을 기억하며, 저 또한 당신의 자랑스러운 자식으로 꿋꿋하게 살아가겠습니다. 사무치게 보고 싶습니다."
+                        : "Mother, your kind face smiling on the screen fills my heart with sorrow. I keep your urn on one side of my desk, with a small note that says 'Mother' next to it. I don't know why this single word I face every day feels so heavy yet warm.\n\nI was a child who couldn't even say \"I love you\" properly while you were alive, and only now am I managing to write it in this empty input box. The words I couldn't finish were actually \"I'm sorry.\" Not visiting more often, not sharing delicious food, and every moment I couldn't hold your tired hands again remains a regret.\n\nThough I cannot convey my heart now, I hope this earnest wish reaches you on the wind. Mother, I pray you are at peace without any pain. Remembering the unconditional love you gave me, I will live on steadfastly as your proud child. I miss you dearly.",
                     location: lang === 'ko' ? '대한민국' : 'South Korea',
                     date: '2026. 4. 8.',
-                    images: ['/mother_hero.png?v=1.1'],
+                    images: ['/mother_hero.png?v=1.5'],
                     audio: null
                 });
             } else if (id.startsWith('demo-')) {
